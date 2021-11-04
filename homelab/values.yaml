@@ -26,7 +26,7 @@ images:
     tag: 1.0.1
     imagePullPolicy: IfNotPresent
   calibre:
-    image: linuxserver/calibre
+    image: linuxserver/calibre-web
     tag: 2021.11.04
     imagePullPolicy: IfNotPresent
 

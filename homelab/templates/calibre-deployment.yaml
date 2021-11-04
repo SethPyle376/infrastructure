@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calibre
+  labels:
+    app: calibre
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: calibre
+  template:
+    metadata:
+      labels:
+        app: calibre
+    spec:
+      volumes:
+        - name: calibre-data
+          persistentVolumeClaim:
+            claimName: calibre-data-pvc
+        - name: calibre-config
+          persistentVolumeClaim:
+            claimName: calibre-config-pvc
+      containers:
+        - name: calibre
+          image: {{ .Values.images.calibre.image }}:{{ .Values.images.calibre.tag }}
+          ports:
+            - containerPort: 8083
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: calibre-data
+              mountPath: /books
+            - name: calibre-config
+              mountPath: /config
+          imagePullPolicy: {{ .Values.images.calibre.imagePullPolicy }}

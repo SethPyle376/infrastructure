@@ -34,3 +34,10 @@ rss:
 irc:
   port: 9000
 
+pgBackup:
+  s3Bucket:
+
+aws:
+  key:
+  secret:
+  defaultRegion: us-east-1

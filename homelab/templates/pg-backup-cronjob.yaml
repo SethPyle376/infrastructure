@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pg-backup
+spec:
+  schedule: "* 8,20 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pg-backup
+            image: sethpyle/pg-backup:latest
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: S3_BUCKET
+                value: {{ .Values.pg-backup.s3-bucket }}
+              - name: PG_USER
+                value: {{ .Values.postgres.user }}
+              - name: PG_PASS
+                value: {{ .Values.postgres.pass }}
+              - name: PG_HOST
+                value: postgres
+              - name: PG_PORT
+                value: {{ .Values.postgres.port }}
+              - name: AWS_ACCESS_KEY_ID
+                value: {{ .Values.aws.key }}
+              - name: AWS_SECRET_ACCESS_KEY
+                value: {{ .Values.aws.secret }}
+              - name: AWS_DEFAULT_REGION
+                value: {{ .Values.aws.defaultRegion }}
+            command:
+            - /bin/sh
+            - -c
+            - cd /home/root; ls; bash do-backup.sh
+          restartPolicy: OnFailure
+      backoffLimit: 3

@@ -21,6 +21,10 @@ images:
     image: thelounge/thelounge
     tag: 4.2.0
     imagePullPolicy: IfNotPresent
+  pgBackup:
+    image: sethpyle/pg-backup
+    tag: 1.0.1
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:

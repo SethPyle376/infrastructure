@@ -4,14 +4,15 @@ metadata:
   name: pg-backup
 spec:
   schedule: "* 8,20 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
         spec:
           containers:
           - name: pg-backup
-            image: sethpyle/pg-backup:latest
-            imagePullPolicy: IfNotPresent
+            image: {{ .Values.images.pgBackup.image }}:{{ .Values.images.pgBackup.tag }}
             env:
               - name: S3_BUCKET
                 value: "{{ .Values.pgBackup.s3Bucket }}"
@@ -35,5 +36,6 @@ spec:
             - /bin/sh
             - -c
             - cd /home/root; ls; bash do-backup.sh
+            imagePullPolicy: {{ .Values.images.pgBackup.imagePullPolicy }}
           restartPolicy: OnFailure
       backoffLimit: 3

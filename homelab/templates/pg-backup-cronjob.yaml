@@ -29,6 +29,8 @@ spec:
                 value: {{ .Values.aws.secret }}
               - name: AWS_DEFAULT_REGION
                 value: {{ .Values.aws.defaultRegion }}
+              - name: DISCORD_WEBHOOK
+                value: {{ .Values.pgBackup.discordWebhook }}
             command:
             - /bin/sh
             - -c

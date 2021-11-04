@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rss-ingress
+spec:
+  tls:
+    - hosts:
+        - rss.sethpyle.com
+  rules:
+    - host: rss.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ttrss
+                port:
+                  number: {{ .Values.rss.port }}

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost
+  labels:
+    app: ghost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost
+  template:
+    metadata:
+      labels:
+        app: ghost
+    spec:
+      volumes:
+        - name: ghost
+          persistentVolumeClaim:
+            claimName: ghost-pvc
+      containers:
+        - name: ghost
+          image: {{ .Values.images.ghost.image }}:{{ .Values.images.ghost.tag }}
+          ports:
+            - containerPort: 2368
+              protocol: TCP
+          env:
+            - name: database__client
+              value: sqlite3
+            - name: database__connection__filename
+              value: /ghost/ghost.db
+            - name: database__debug
+              value: 'false'
+            - name: url
+              value: 'https://blog.sethpyle.com'
+          resources: {}
+          volumeMounts:
+            - name: ghost
+              mountPath: /ghost
+          imagePullPolicy: {{ .Values.images.ghost.imagePullPolicy }}
+

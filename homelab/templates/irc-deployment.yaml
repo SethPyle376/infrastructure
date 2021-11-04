@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: irc
+  labels:
+    app: irc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: irc
+  template:
+    metadata:
+      labels:
+        app: irc
+    spec:
+      volumes:
+        - name: irc-data
+          persistentVolumeClaim:
+            claimName: irc-pvc
+      containers:
+        - name: irc
+          image: {{ .Values.images.irc.image }}:{{ .Values.images.irc.tag }}
+          ports:
+            - containerPort: {{ .Values.irc.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: irc-data
+              mountPath: /var/opt/thelounge
+          imagePullPolicy: {{ .Values.images.irc.imagePullPolicy }}
+

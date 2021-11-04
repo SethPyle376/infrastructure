@@ -1,0 +1,36 @@
+# Default values for homelab.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullPolicy: IfNotPresent
+
+images:
+  ghost:
+    image: ghost
+    tag: 4.21.0
+    imagePullPolicy: IfNotPresent
+  postgres:
+    image: postgres
+    tag: 9.6.23
+    imagePullPolicy: IfNotPresent
+  rss:
+    image: wangqiru/ttrss
+    tag: latest
+    imagePullPolicy: IfNotPresent
+  irc:
+    image: thelounge/thelounge
+    tag: 4.2.0
+    imagePullPolicy: IfNotPresent
+
+postgres:
+  user:
+  pass:
+  db:
+  port: 5432
+
+rss:
+  port: 80
+
+irc:
+  port: 9000
+

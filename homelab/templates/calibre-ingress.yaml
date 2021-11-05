@@ -4,6 +4,7 @@ metadata:
   name: calibre-ingress
 spec:
   tls:
+    - secretName: "le-cert"
     - hosts:
         - library.sethpyle.com
   rules:

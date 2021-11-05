@@ -4,6 +4,7 @@ metadata:
   name: rss-ingress
 spec:
   tls:
+    - secretName: "le-cert"
     - hosts:
         - rss.sethpyle.com
   rules:

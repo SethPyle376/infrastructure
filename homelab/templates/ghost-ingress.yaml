@@ -4,6 +4,7 @@ metadata:
   name: ghost-ingress
 spec:
   tls:
+    - secretName: "le-cert"
     - hosts:
         - blog.sethpyle.com
   rules:

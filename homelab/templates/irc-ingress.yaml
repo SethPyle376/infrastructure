@@ -4,6 +4,7 @@ metadata:
   name: irc-ingress
 spec:
   tls:
+    - secretName: "le-cert"
     - hosts:
         - irc.sethpyle.com
   rules:

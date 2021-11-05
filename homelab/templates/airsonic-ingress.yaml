@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: airsonic-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - music.sethpyle.com
+  rules:
+    - host: music.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: airsonic
+                port:
+                  number: 4040

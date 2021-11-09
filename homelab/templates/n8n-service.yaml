@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: n8n
+  labels:
+    app: n8n
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.n8n.port }}
+      targetPort: {{ .Values.n8n.port }}
+  selector:
+    app: n8n
+  type: ClusterIP

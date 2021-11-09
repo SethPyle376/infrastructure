@@ -33,6 +33,10 @@ images:
     image: linuxserver/airsonic
     tag: 10.6.2
     imagePullPolicy: IfNotPresent
+  n8n:
+    image: n8nio/n8n
+    tag: 0.148.0
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:
@@ -42,6 +46,9 @@ postgres:
 
 rss:
   port: 80
+
+n8n:
+  port: 5678
 
 irc:
   port: 9000

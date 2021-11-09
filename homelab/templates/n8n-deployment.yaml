@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+  labels:
+    app: n8n
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: n8n
+  template:
+    metadata:
+      labels:
+        app: n8n
+    spec:
+      volumes:
+        - name: n8n-data
+          persistentVolumeClaim:
+            claimName: n8n-pvc
+      containers:
+        - name: postgres
+          image: {{ .Values.images.n8n.image}}:{{ .Values.images.n8n.tag }}
+          ports:
+            - containerPort: {{ .Values.n8n.port }}
+              protocol: TCP
+          env:
+            - name: DB_TYPE
+              value: postgresdb
+            - name: DB_POSTGRESDB_HOST
+              value: postgres
+            - name: DB_POSTGRESDB_USER
+              value: {{ .Values.postgres.user }}
+            - name: DB_POSTGRESDB_DATABASE
+              value: {{ .Values.postgres.db }}
+            - name: DB_POSTGRESDB_PASSWORD
+              value: {{ .Values.postgres.pass }}
+            - name: DB_POSTGRESDB_PORT
+              value: "{{ .Values.postgres.port }}"
+            - name: DB_POSTGRESDB_SCHEMA
+              value: "n8n"
+          volumeMounts:
+            - name: n8n-data
+              mountPath: /config
+          imagePullPolicy: {{ .Values.images.n8n.imagePullPolicy }}

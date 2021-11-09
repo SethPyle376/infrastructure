@@ -7,4 +7,6 @@ helm upgrade --install homelab homelab/ \
 --set aws.key=$HOMELAB_AWS_ACCESS_KEY_ID \
 --set aws.secret=$HOMELAB_AWS_ACCESS_SECRET_KEY_ID \
 --set pgBackup.s3Bucket=$PGBACKUP_S3_BUCKET \
---set pgBackup.discordWebhook=$PGBACKUP_DISCORD_WEBHOOK
+--set pgBackup.discordWebhook=$PGBACKUP_DISCORD_WEBHOOK \
+--set n8n.user=$N8N_USER \
+--set n8n.pass=$N8N_PASSWORD

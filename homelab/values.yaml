@@ -37,6 +37,10 @@ images:
     image: n8nio/n8n
     tag: 0.148.0
     imagePullPolicy: IfNotPresent
+  nodered:
+    image: nodered/node-red
+    tag: 2.1.3
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:
@@ -52,6 +56,9 @@ n8n:
 
 irc:
   port: 9000
+
+nodered:
+  port: 1880
 
 pgBackup:
   s3Bucket:

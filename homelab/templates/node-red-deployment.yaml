@@ -18,6 +18,7 @@ spec:
         - name: nodered-data
           persistentVolumeClaim:
             claimName: nodered-pvc
+      containers:
         - name: nodered
           image: {{ .Values.images.nodered.image }}:{{ .Values.images.nodered.tag }}
           ports:

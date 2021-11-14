@@ -39,7 +39,15 @@ spec:
               value: "{{ .Values.postgres.port }}"
             - name: DB_POSTGRESDB_SCHEMA
               value: "n8n"
+            - name: N8N_PORT
+              value: "{{ .Values.n8n.port }}"
+            - name: N8N_BASIC_AUTH_ACTIVE
+              value: "{{ .Values.n8n.useBasicAuth }}"
+            - name: N8N_BASIC_AUTH_USER
+              value: {{ .Values.n8n.user }}
+            - name: N8N_BASIC_AUTH_PASSWORD
+              value: {{ .Values.n8n.pass }}
           volumeMounts:
             - name: n8n-data
-              mountPath: /config
+              mountPath: /home/node/.n8n
           imagePullPolicy: {{ .Values.images.n8n.imagePullPolicy }}

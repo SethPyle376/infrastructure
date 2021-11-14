@@ -53,6 +53,9 @@ rss:
 
 n8n:
   port: 5678
+  useBasicAuth: true
+  user:
+  pass:
 
 irc:
   port: 9000

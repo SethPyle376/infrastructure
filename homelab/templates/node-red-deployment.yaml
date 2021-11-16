@@ -18,6 +18,9 @@ spec:
         - name: nodered-data
           persistentVolumeClaim:
             claimName: nodered-pvc
+        - name: nodered-settings
+          configMap:
+            name: nodered-settings-configmap
         - name: nodered
           image: {{ .Values.images.nodered.image }}:{{ .Values.images.nodered.tag }}
           ports:
@@ -27,4 +30,6 @@ spec:
           volumeMounts:
             - name: nodered-data
               mountPath: /data
+            - name: nodered-settings
+              mountPath: /usr/src/node-red/.node-red/settings.js
           imagePullPolicy: {{ .Values.images.nodered.imagePullPolicy }}

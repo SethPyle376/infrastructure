@@ -21,6 +21,7 @@ spec:
         - name: nodered-settings
           configMap:
             name: nodered-settings-configmap
+      containers:
         - name: nodered
           image: {{ .Values.images.nodered.image }}:{{ .Values.images.nodered.tag }}
           ports:

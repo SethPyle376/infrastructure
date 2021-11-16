@@ -32,5 +32,6 @@ spec:
             - name: nodered-data
               mountPath: /data
             - name: nodered-settings
-              mountPath: /usr/src/node-red/.node-red/settings.js
+              mountPath: /data/settings.js
+              subPath: settings.js
           imagePullPolicy: {{ .Values.images.nodered.imagePullPolicy }}

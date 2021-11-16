@@ -4,4 +4,4 @@ metadata:
   name: nodered-settings-configmap
 data:
   settings.js: |-
-{{ .Files.Get "settings.js" | indent 4}}
+{{ .Files.Get "nodered-settings.js" | indent 4}}

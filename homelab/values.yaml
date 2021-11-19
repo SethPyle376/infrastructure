@@ -41,6 +41,14 @@ images:
     image: nodered/node-red
     tag: 2.1.3
     imagePullPolicy: IfNotPresent
+  matrix:
+    image: matrixdotorg/synapse
+    tag: v1.47.0
+    imagePullPolicy: IfNotPresent
+  delegation:
+    image: nginx
+    tag: 1.21.4
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:

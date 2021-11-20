@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matrix-log-configmap
+data:
+  matrix.sethpyle.com.log.config: |-
+{{ .Files.Get "matrix-log.config" | indent 4}}

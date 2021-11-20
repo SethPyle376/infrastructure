@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matrix
+  labels:
+    app: matrix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matrix
+  template:
+    metadata:
+      labels:
+        app: matrix
+    spec:
+      volumes:
+        - name: matrix-config
+          secret:
+            secretName: matrix-settings.yaml
+        - name: matrix-signing-key
+          secret:
+            secretName: matrix-signing-key
+        - name: matrix-data
+          persistentVolumeClaim:
+            claimName: matrix-pvc
+        - name: matrix-log-config
+          configMap:
+            name: matrix-log-configmap
+      containers:
+        - name: matrix
+          image: {{ .Values.images.matrix.image }}:{{ .Values.images.matrix.tag }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - cp /homeserver.yaml /data/homeserver.yaml && cp /matrix.sethpyle.com.signing.key /data/matrix.sethpyle.com.signing.key
+          ports:
+            - containerPort: 8008
+              protocol: TCP
+          volumeMounts:
+            - name: matrix-data
+              mountPath: /data
+            - name: matrix-config
+              mountPath: /homeserver.yaml
+              subPath: homeserver.yaml
+            - name: matrix-signing-key
+              mountPath: /matrix.sethpyle.com.signing.key
+              subPath: matrix.sethpyle.com.signing.key
+            - name: matrix-log-config
+              mountPath: /data/matrix.sethpyle.com.log.config
+              subPath: matrix.sethpyle.com.log.config
+          imagePullPolicy: {{ .Values.images.matrix.imagePullPolicy }}

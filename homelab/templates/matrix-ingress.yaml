@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: matrix-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - matrix.sethpyle.com
+  rules:
+    - host: matrix.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: matrix
+                port:
+                  number: 8008

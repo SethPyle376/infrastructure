@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: searxng
+  labels:
+    app: searxng
+spec:
+  replicas: {{ .Values.searxng.replicaCount }}
+  selector:
+    matchLabels:
+      app: searxng
+  template:
+    metadata:
+      labels:
+        app: searxng
+    spec:
+      volumes:
+        - name: searxng-settings
+          configMap:
+            name: searxng-config-configmap
+      containers:
+        - name: searxng
+          image: {{ .Values.images.searxng.image }}:{{ .Values.images.searxng.tag }}
+          ports:
+            - containerPort: {{ .Values.searxng.port }}
+              protocol: TCP
+          env:
+            - name: SEARXNG_SECRET
+              value: {{ .Values.searxng.secret }}
+            - name: INSTANCE_NAME
+              value: "homelab"
+            - name: BASE_URL
+              value: {{ .Values.searxng.baseURL }}
+          resources: {}
+          volumeMounts:
+            - name: searxng-settings
+              mountPath: /etc/searxng/uwsgi.ini
+              subPath: searxng-uwsgi.ini
+            - name: searxng-settings
+              mountPath: /etc/searxng/settings.yaml
+              subPath: searxng-settings.yaml
+          imagePullPolicy: {{ .Values.images.searxng.imagePullPolicy }}

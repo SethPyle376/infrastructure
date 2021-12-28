@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matrixdiscord
+  labels:
+    app: matrixdiscord
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matrixdiscord
+  template:
+    metadata:
+      labels:
+        app: matrixdiscord
+    spec:
+      volumes:
+        - name: discord-matrix-data
+          persistentVolumeClaim:
+            claimName: discord-matrix-pvc
+        - name: matrix-discord-config
+          secret:
+            secretName: matrix-discord-bridge
+      containers:
+        - name: matrixdiscord
+          image: {{ .Values.images.matrixdiscord.image }}:{{ .Values.images.matrixdiscord.tag }}
+          ports:
+            - containerPort: 9005
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: discord-matrix-data
+              mountPath: /data
+            - name: matrix-discord-config
+              mountPath: /data/discord-registration.yaml
+              subPath: discord-registration.yaml
+            - name: matrix-discord-config
+              mountPath: /data/config.yaml
+              subPath: config.yaml
+          imagePullPolicy: {{ .Values.images.matrixdiscord.imagePullPolicy }}

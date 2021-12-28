@@ -21,6 +21,9 @@ spec:
         - name: matrix-signing-key
           secret:
             secretName: matrix-signing-key
+        - name: matrix-discord-config
+          secret:
+            secretName: matrix-discord-bridge
         - name: matrix-data
           persistentVolumeClaim:
             claimName: matrix-pvc
@@ -52,4 +55,7 @@ spec:
             - name: matrix-log-config
               mountPath: /data/matrix.sethpyle.com.log.config
               subPath: matrix.sethpyle.com.log.config
+            - name: matrix-discord-config
+              mountPath: /discord-registration.yaml
+              subPath: discord-registration.yaml
           imagePullPolicy: {{ .Values.images.matrix.imagePullPolicy }}

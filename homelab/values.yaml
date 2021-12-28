@@ -57,6 +57,10 @@ images:
     image: grafana/grafana
     tag: 8.3.2-ubuntu
     imagePullPolicy: IfNotPresent
+  matrixdiscord:
+    image: sethpyle/matrix-appservice-discord
+    tag: 1.0.0
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:

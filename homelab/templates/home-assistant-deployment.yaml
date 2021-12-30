@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant
+  labels:
+    app: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      volumes:
+        - name: homeassistant
+          persistentVolumeClaim:
+            claimName: homeassistant-config-pvc
+      containers:
+        - name: homeassistant
+          image: {{ .Values.images.homeassistant.image }}:{{ .Values.images.homeassistant.tag }}
+          ports:
+            - containerPort: 8123
+              protocol: TCP
+          env:
+            - name: TZ
+              value: 'America/Chicago'
+          resources: {}
+          volumeMounts:
+            - name: homeassistant
+              mountPath: /config
+          imagePullPolicy: {{ .Values.images.homeassistant.imagePullPolicy }}
+

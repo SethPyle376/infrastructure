@@ -61,6 +61,14 @@ images:
     image: sethpyle/matrix-appservice-discord
     tag: 1.0.0
     imagePullPolicy: IfNotPresent
+  homeassistant:
+    image: homeassistant/home-assistant
+    tag: 2021.12
+    imagePullPolicy: IfNotPresent
+  planka:
+    image: meltyshev/planka
+    tag: 1.0.0-beta
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:
@@ -97,3 +105,8 @@ searxng:
   secret:
   baseURL:
   replicaCount: 1
+
+planka:
+  port: 1337
+  connectionString:
+  secretKey:

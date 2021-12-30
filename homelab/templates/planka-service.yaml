@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: planka
+  labels:
+    app: planka
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.planka.port }}
+      targetPort: {{ .Values.planka.port }}
+  selector:
+    app: planka
+  type: ClusterIP

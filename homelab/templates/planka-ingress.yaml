@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: planka-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - planka.sethpyle.com
+  rules:
+    - host: planka.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: planka
+                port:
+                  number: {{ .Values.planka.port }}

@@ -11,4 +11,6 @@ helm upgrade --install homelab homelab/ \
 --set n8n.user=$N8N_USER \
 --set n8n.pass=$N8N_PASSWORD \
 --set searxng.secret=$SEARXNG_SECRET \
---set searxng.baseURL=$SEARXNG_BASE_URL
+--set searxng.baseURL=$SEARXNG_BASE_URL \
+--set planka.connectionString=$PLANKA_CONNECTION_STRING \
+--set planka.secretKey=$PLANKA_SECRET_KEY

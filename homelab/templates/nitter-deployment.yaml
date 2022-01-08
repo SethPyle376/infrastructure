@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nitter
+  labels:
+    app: nitter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nitter
+  template:
+    metadata:
+      labels:
+        app: nitter
+    spec:
+      volumes:
+        - name: nitter-data
+          persistentVolumeClaim:
+            claimName: nitter-data-pvc
+      containers:
+        - name: nitter
+          image: {{ .Values.images.nitter.image }}:{{ .Values.images.nitter.tag }}
+          env:
+            - name: REDIS_HOST
+              value: redis
+          ports:
+            - containerPort: {{ .Values.nitter.port }}
+              protocol: TCP
+          imagePullPolicy: {{ .Values.images.nitter.imagePullPolicy }}
+          volumeMounts:
+            - name: nitter-data
+              mountPath: /data

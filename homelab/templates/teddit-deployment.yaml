@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: teddit
+  labels:
+    app: teddit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: teddit
+  template:
+    metadata:
+      labels:
+        app: teddit
+    spec:
+      containers:
+        - name: teddit
+          image: {{ .Values.images.teddit.image }}:{{ .Values.images.teddit.tag }}
+          ports:
+            - containerPort: {{ .Values.teddit.port }}
+              protocol: TCP
+          env:
+            - name: DOMAIN
+              value: 'teddit.sethpyle.com'
+            - name: USE_HELMET
+              value: 'true'
+            - name: USE_HELMET_HSTS
+              value: 'true'
+            - name: TRUST_PROXY
+              value: 'true'
+            - name: TRUST_PROXY_ADDRESS
+              value: '10.0.0.0/8'
+            - name: NSFW_ENABLED
+              value: 'false'
+            - name: REDIS_HOST
+              value: 'redis'
+          imagePullPolicy: {{ .Values.images.teddit.imagePullPolicy }}

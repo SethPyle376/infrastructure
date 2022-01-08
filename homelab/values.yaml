@@ -69,6 +69,18 @@ images:
     image: meltyshev/planka
     tag: 1.0.0-beta
     imagePullPolicy: IfNotPresent
+  teddit:
+    image: 1337kavin/teddit
+    tag: latest
+    imagePullPolicy: IfNotPresent
+  redis:
+    image: redis
+    tag: 6.2.6
+    imagePullPolicy: IfNotPresent
+  nitter:
+    image: quay.io/unixfox/nitter
+    tag: build-20220107
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:
@@ -110,3 +122,13 @@ planka:
   port: 1337
   connectionString:
   secretKey:
+
+teddit:
+  port: 8080
+  appID:
+
+redis:
+  port: 6379
+
+nitter:
+  port: 8080

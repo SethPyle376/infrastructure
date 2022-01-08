@@ -13,4 +13,5 @@ helm upgrade --install homelab homelab/ \
 --set searxng.secret=$SEARXNG_SECRET \
 --set searxng.baseURL=$SEARXNG_BASE_URL \
 --set planka.connectionString=$PLANKA_CONNECTION_STRING \
---set planka.secretKey=$PLANKA_SECRET_KEY
+--set planka.secretKey=$PLANKA_SECRET_KEY \
+--set teddit.appID=$TEDDIT_APP_ID

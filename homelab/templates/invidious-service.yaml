@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: youtube
+  labels:
+    app: youtube
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.youtube.port }}
+      targetPort: {{ .Values.youtube.port }}
+  selector:
+    app: youtube
+  type: ClusterIP

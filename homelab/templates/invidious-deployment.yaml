@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: youtube
+  labels:
+    app: youtube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: youtube
+  template:
+    metadata:
+      labels:
+        app: youtube
+    spec:
+      volumes:
+        - name: invidious-config
+          secret:
+            secretName: invidious-config
+      containers:
+        - name: youtube
+          image: {{ .Values.images.youtube.image }}:{{ .Values.images.youtube.tag }}
+          ports:
+            - containerPort: {{ .Values.youtube.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: invidious-config
+              mountPath: /invidious/config/config.yml
+              subPath: invidious-config.yaml
+          imagePullPolicy: {{ .Values.images.youtube.imagePullPolicy }}

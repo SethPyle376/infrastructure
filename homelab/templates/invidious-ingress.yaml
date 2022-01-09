@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: youtube-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - youtube.sethpyle.com
+  rules:
+    - host: youtube.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: youtube
+                port:
+                  number: {{ .Values.youtube.port }}

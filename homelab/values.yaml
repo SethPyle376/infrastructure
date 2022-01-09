@@ -81,6 +81,10 @@ images:
     image: quay.io/unixfox/nitter
     tag: build-20220107
     imagePullPolicy: IfNotPresent
+  youtube:
+    image: quay.io/invidious/invidious
+    tag: 67cb8b7107682e451fa86c574c691f707e902e8c-arm64
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:
@@ -132,3 +136,6 @@ redis:
 
 nitter:
   port: 8080
+
+youtube:
+  port: 3000

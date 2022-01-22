@@ -79,7 +79,7 @@ images:
     imagePullPolicy: IfNotPresent
   nitter:
     image: quay.io/unixfox/nitter
-    tag: build-20220107
+    tag: build-20220122
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious

@@ -4,7 +4,6 @@ metadata:
   name: irc-ingress
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-traefik-auth@kubernetescrd
 spec:
   tls:
     - secretName: "le-cert"

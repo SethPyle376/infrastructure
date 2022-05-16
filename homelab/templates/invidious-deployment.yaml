@@ -24,6 +24,13 @@ spec:
           ports:
             - containerPort: {{ .Values.youtube.port }}
               protocol: TCP
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           volumeMounts:
             - name: invidious-config
               mountPath: /invidious/config/config.yml

@@ -39,7 +39,13 @@ spec:
               value: {{ .Values.planka.connectionString }}
             - name: SECRET_KEY
               value: {{ .Values.planka.secretKey }}
-
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
           volumeMounts:
             - name: planka-user-avatars
               mountPath: /app/public/user-avatars

@@ -33,7 +33,13 @@ spec:
           ports:
             - containerPort: 4040
               protocol: TCP
-          resources: {}
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           volumeMounts:
             - name: airsonic-music
               mountPath: /music

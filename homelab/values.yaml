@@ -27,7 +27,7 @@ images:
     imagePullPolicy: IfNotPresent
   calibre:
     image: linuxserver/calibre-web
-    tag: 2021.11.04
+    tag: 0.6.17
     imagePullPolicy: IfNotPresent
   airsonic:
     image: linuxserver/airsonic
@@ -79,11 +79,15 @@ images:
     imagePullPolicy: IfNotPresent
   nitter:
     image: quay.io/unixfox/nitter
-    tag: build-20220122
+    tag: build-20220315
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious
-    tag: 67cb8b7107682e451fa86c574c691f707e902e8c-arm64
+    tag: ed265cfdcd131b9df5398d899cc5d7036a5b7846-arm64
+    imagePullPolicy: IfNotPresent
+  nocodb:
+    image: nocodb/nocodb
+    tag: 0.84.16
     imagePullPolicy: IfNotPresent
 
 postgres:

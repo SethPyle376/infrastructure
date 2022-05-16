@@ -27,7 +27,13 @@ spec:
           ports:
             - containerPort: 9005
               protocol: TCP
-          resources: {}
+          resources:
+            requests:
+              memory: "40Mi"
+              cpu: "10m"
+            limits:
+              memory: "80Mi"
+              cpu: "50m"
           volumeMounts:
             - name: discord-matrix-data
               mountPath: /data

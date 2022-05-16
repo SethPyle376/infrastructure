@@ -31,7 +31,13 @@ spec:
               value: "homelab"
             - name: BASE_URL
               value: {{ .Values.searxng.baseURL }}
-          resources: {}
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "100m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
           volumeMounts:
             - name: searxng-settings
               mountPath: /etc/searxng/uwsgi.ini

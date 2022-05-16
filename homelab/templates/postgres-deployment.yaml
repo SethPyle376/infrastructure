@@ -31,6 +31,13 @@ spec:
               value: {{ .Values.postgres.user }}
             - name: POSTGRES_DB
               value: {{ .Values.postgres.db }}
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "3Gi"
+              cpu: "1"
           volumeMounts:
             - name: postgresdb
               mountPath: /var/lib/postgresql/data

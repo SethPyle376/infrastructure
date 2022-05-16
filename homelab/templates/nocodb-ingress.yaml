@@ -1,21 +1,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: youtube-ingress
-  annotations:
-    kubernetes.io/ingress.class: traefik
+  name: nocodb-ingress
 spec:
   tls:
     - secretName: "le-cert"
     - hosts:
-        - youtube.sethpyle.com
+        - db.sethpyle.com
   rules:
-    - host: youtube.sethpyle.com
+    - host: db.sethpyle.com
       http:
         paths:
           - pathType: ImplementationSpecific
             backend:
               service:
-                name: youtube
+                name: nocodb
                 port:
-                  number: {{ .Values.youtube.port }}
+                  number: 8080

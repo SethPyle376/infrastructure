@@ -37,6 +37,13 @@ spec:
               value: "{{ .Values.postgres.port }}"
             - name: SELF_URL_PATH
               value: 'https://rss.sethpyle.com'
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           volumeMounts:
             - name: rss-data
               mountPath: /config

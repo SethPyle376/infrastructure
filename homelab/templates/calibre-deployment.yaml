@@ -27,7 +27,13 @@ spec:
           ports:
             - containerPort: 8083
               protocol: TCP
-          resources: {}
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           volumeMounts:
             - name: calibre-data
               mountPath: /books

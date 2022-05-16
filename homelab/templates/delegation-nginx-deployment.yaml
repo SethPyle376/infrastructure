@@ -24,6 +24,13 @@ spec:
           ports:
             - containerPort: 80
               protocol: TCP
+          resources:
+            requests:
+              memory: "5Mi"
+              cpu: "10m"
+            limits:
+              memory: "10Mi"
+              cpu: "50m"
           volumeMounts:
             - name: delegation-config
               mountPath: /etc/nginx/conf.d/default.conf

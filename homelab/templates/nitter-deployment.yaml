@@ -24,6 +24,13 @@ spec:
           env:
             - name: REDIS_HOST
               value: redis
+          resources:
+            requests:
+              memory: "10Mi"
+              cpu: "10m"
+            limits:
+              memory: "20Mi"
+              cpu: "50m"
           ports:
             - containerPort: {{ .Values.nitter.port }}
               protocol: TCP

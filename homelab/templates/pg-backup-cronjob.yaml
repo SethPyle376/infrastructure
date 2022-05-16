@@ -37,5 +37,12 @@ spec:
             - -c
             - cd /home/root; ls; bash do-backup.sh
             imagePullPolicy: {{ .Values.images.pgBackup.imagePullPolicy }}
+            resources:
+              requests:
+                memory: "2Gi"
+                cpu: "10m"
+              limits:
+                memory: "3Gi"
+                cpu: "500m"
           restartPolicy: OnFailure
       backoffLimit: 3

@@ -89,6 +89,15 @@ images:
     image: nocodb/nocodb
     tag: 0.84.16
     imagePullPolicy: IfNotPresent
+  freshrss:
+    image: lscr.io/linuxserver/freshrss
+    tag: 1.19.2
+    imagePullPolicy: IfNotPresent
+  piholeexporter:
+    image: ekofr/pihole-exporter
+    tag: v0.3.0
+    imagePullPolicy: IfNotPresent
+
 
 postgres:
   user:
@@ -143,3 +152,6 @@ nitter:
 
 youtube:
   port: 3000
+
+freshrss:
+  port: 80

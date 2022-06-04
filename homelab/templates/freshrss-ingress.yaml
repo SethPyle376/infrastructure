@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: freshrss-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - freshrss.sethpyle.com
+  rules:
+    - host: freshrss.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: freshrss
+                port:
+                  number: {{ .Values.freshrss.port }}

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: freshrss
+  labels:
+    app: freshrss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: freshrss
+  template:
+    metadata:
+      labels:
+        app: freshrss
+    spec:
+      volumes:
+        - name: freshrss-data
+          persistentVolumeClaim:
+            claimName: freshrss-pvc
+      containers:
+        - name: postgres
+          image: {{ .Values.images.freshrss.image}}:{{ .Values.images.freshrss.tag }}
+          ports:
+            - containerPort: {{ .Values.freshrss.port }}
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: freshrss-data
+              mountPath: /config
+          imagePullPolicy: {{ .Values.images.freshrss.imagePullPolicy }}
+

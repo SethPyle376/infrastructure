@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flame
+  labels:
+    app: flame
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flame
+  template:
+    metadata:
+      labels:
+        app: flame
+    spec:
+      volumes:
+        - name: flame-data
+          persistentVolumeClaim:
+            claimName: flame-pvc
+      containers:
+        - name: flame
+          image: {{ .Values.images.flame.image }}:{{ .Values.images.flame.tag }}
+          env:
+            - name: 'PASSWORD'
+              valueFrom:
+                secretKeyRef:
+                  name: flame
+                  key: password
+                  optional: false
+          ports:
+            - containerPort: 5005
+              protocol: TCP
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: flame-data
+              mountPath: /app/data
+          imagePullPolicy: {{ .Values.images.flame.imagePullPolicy }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: flame-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flame
+  labels:
+    app: flame
+spec:
+  ports:
+    - protocol: TCP
+      port: 5005
+      targetPort: 5005
+  selector:
+    app: flame
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flame-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - dashboard.sethpyle.com
+  rules:
+    - host: dashboard.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: flame
+                port:
+                  number: 5005

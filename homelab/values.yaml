@@ -79,7 +79,7 @@ images:
     imagePullPolicy: IfNotPresent
   nitter:
     image: quay.io/unixfox/nitter
-    tag: build-20220315
+    tag: build-20220604
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious
@@ -96,6 +96,10 @@ images:
   piholeexporter:
     image: ekofr/pihole-exporter
     tag: v0.3.0
+    imagePullPolicy: IfNotPresent
+  flame:
+    image: pawelmalak/flame
+    tag: multiarch2.3.0
     imagePullPolicy: IfNotPresent
 
 

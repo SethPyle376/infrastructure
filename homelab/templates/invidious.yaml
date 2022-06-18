@@ -5,7 +5,7 @@ metadata:
   labels:
     app: youtube
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: youtube
@@ -34,5 +34,42 @@ spec:
           volumeMounts:
             - name: invidious-config
               mountPath: /invidious/config/config.yml
-              subPath: invidious-config.yaml
+              subPath: invidious-config.yml
           imagePullPolicy: {{ .Values.images.youtube.imagePullPolicy }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: youtube
+  labels:
+    app: youtube
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.youtube.port }}
+      targetPort: {{ .Values.youtube.port }}
+  selector:
+    app: youtube
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: youtube-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - youtube.sethpyle.com
+  rules:
+    - host: youtube.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: youtube
+                port:
+                  number: {{ .Values.youtube.port }}

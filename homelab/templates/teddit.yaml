@@ -45,3 +45,38 @@ spec:
               memory: "512Mi"
               cpu: "1"
           imagePullPolicy: {{ .Values.images.teddit.imagePullPolicy }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: teddit
+  labels:
+    app: teddit
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.teddit.port }}
+      targetPort: {{ .Values.teddit.port }}
+  selector:
+    app: teddit
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: teddit-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - teddit.sethpyle.com
+  rules:
+    - host: teddit.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: teddit
+                port:
+                  number: {{ .Values.teddit.port }}

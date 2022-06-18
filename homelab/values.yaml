@@ -51,7 +51,7 @@ images:
     imagePullPolicy: IfNotPresent
   searxng:
     image: searxng/searxng
-    tag: 1.0.0-1166-da1d502c
+    tag: 2022.06.18-62e88e63
     imagePullPolicy: IfNotPresent
   grafana:
     image: grafana/grafana
@@ -141,7 +141,7 @@ searxng:
   port: 8080
   secret:
   baseURL:
-  replicaCount: 1
+  replicaCount: 0
 
 planka:
   port: 1337

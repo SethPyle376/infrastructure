@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nodered-settings-configmap
-data:
-  settings.js: |-
-{{ .Files.Get "nodered-settings.js" | indent 4}}

@@ -46,3 +46,45 @@ spec:
               mountPath: /etc/searxng/settings.yaml
               subPath: searxng-settings.yaml
           imagePullPolicy: {{ .Values.images.searxng.imagePullPolicy }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: searxng-config-configmap
+data:
+{{ (.Files.Glob "config_files/*").AsConfig | indent 2 }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: searxng-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - search.sethpyle.com
+  rules:
+    - host: search.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: searxng
+                port:
+                  number: {{ .Values.searxng.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: searxng
+  labels:
+    app: searxng
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.searxng.port }}
+      targetPort: {{ .Values.searxng.port }}
+  selector:
+    app: searxng
+  type: ClusterIP

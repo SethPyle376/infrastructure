@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashy
+  labels:
+    app: dashy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashy
+  template:
+    metadata:
+      labels:
+        app: dashy
+    spec:
+      volumes:
+        - name: dashy-config
+          configMap: 
+            name: dashy-configmap 
+      containers:
+        - name: dashy
+          image: {{ .Values.images.dashy.image }}:{{ .Values.images.dashy.tag }}
+          ports: 
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2"
+          volumeMounts:
+            - name: dashy-config
+              mountPath: /app/public/conf.yml
+              subPath: conf.yml
+          imagePullPolicy: {{ .Values.images.dashy.imagePullPolicy }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashy
+  labels:
+    app: dashy
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: dashy
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashy-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - dashy.sethpyle.com
+  rules:
+    - host: dashy.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: dashy
+                port:
+                  number: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashy-configmap
+data:
+  conf.yml: |-
+{{ .Files.Get "config_files/conf.yml" | indent 4}}

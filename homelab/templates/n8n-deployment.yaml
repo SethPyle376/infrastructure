@@ -29,8 +29,8 @@ spec:
               memory: "32Mi"
               cpu: "10m"
             limits:
-              memory: "64Mi"
-              cpu: "50m"
+              memory: "256Mi"
+              cpu: "500m"
           env:
             - name: DB_TYPE
               value: postgresdb

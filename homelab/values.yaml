@@ -35,7 +35,7 @@ images:
     imagePullPolicy: IfNotPresent
   n8n:
     image: n8nio/n8n
-    tag: 0.148.0
+    tag: 0.181.2
     imagePullPolicy: IfNotPresent
   nodered:
     image: nodered/node-red
@@ -83,7 +83,7 @@ images:
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious
-    tag: ed265cfdcd131b9df5398d899cc5d7036a5b7846-arm64
+    tag: b5c54b4e410709d93423ca019aaf30579cb53ace-arm64
     imagePullPolicy: IfNotPresent
   nocodb:
     image: nocodb/nocodb
@@ -100,6 +100,10 @@ images:
   flame:
     image: pawelmalak/flame
     tag: multiarch2.3.0
+    imagePullPolicy: IfNotPresent
+  dashy:
+    image: lissy93/dashy
+    tag: 2.1.0
     imagePullPolicy: IfNotPresent
 
 

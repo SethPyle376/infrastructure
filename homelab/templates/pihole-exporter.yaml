@@ -30,6 +30,8 @@ spec:
               value: '9617'
             - name: 'PIHOLE_PORT'
               value: '8080'
+            - name: 'INTERVAL'
+              value: '60s'
           ports:
             - containerPort: 9617
               protocol: TCP

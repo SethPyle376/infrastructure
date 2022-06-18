@@ -35,6 +35,8 @@ spec:
               value: 'false'
             - name: REDIS_HOST
               value: 'redis'
+            - name: DOMAIN_REPLACEMENTS
+              value: '[["twitter.com", "nitter.sethpyle.com"], ["m.youtube.com", "youtube.sethpyle.com"], ["www.youtube.com", "youtube.sethpyle.com"], ["youtube.com", "youtube.sethpyle.com"], ["youtu.be", "youtube.sethpyle.com"]]'
           resources:
             requests:
               memory: "128Mi"

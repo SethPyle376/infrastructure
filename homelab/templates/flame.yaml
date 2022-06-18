@@ -17,7 +17,7 @@ spec:
       volumes:
         - name: flame-data
           persistentVolumeClaim:
-            claimName: flame-pvc
+            claimName: flame-longhorn-pvc
       containers:
         - name: flame
           image: {{ .Values.images.flame.image }}:{{ .Values.images.flame.tag }}
@@ -46,14 +46,14 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: flame-pvc
+  name: flame-longhorn-pvc
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: longhorn
   resources:
     requests:
-      storage: 1Gi
+      storage: 500Mi
 ---
 apiVersion: v1
 kind: Service

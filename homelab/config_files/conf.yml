@@ -1,0 +1,193 @@
+pageInfo:
+  title: Seth's Homelab
+  description: Homelab Dashboard
+  navLinks:
+    - target: sametab
+appConfig:
+  theme: oblivion
+  layout: auto
+  iconSize: medium
+  language: en
+  startingView: default
+  defaultOpeningMethod: newtab
+  statusCheck: false
+  statusCheckInterval: 0
+  faviconApi: local
+  routingMode: history
+  enableMultiTasking: false
+  widgetsAlwaysUseProxy: false
+  webSearch:
+    disableWebSearch: false
+    searchEngine: duckduckgo
+    openingMethod: newtab
+    searchBangs: {}
+  enableFontAwesome: true
+  enableMaterialDesignIcons: false
+  hideComponents:
+    hideHeading: false
+    hideNav: false
+    hideSearch: false
+    hideSettings: false
+    hideFooter: false
+  auth:
+    enableGuestAccess: false
+    users: []
+    enableKeycloak: false
+  showSplashScreen: false
+  preventWriteToDisk: false
+  preventLocalSave: false
+  disableConfiguration: false
+  allowConfigEdit: true
+  enableServiceWorker: false
+  disableContextMenu: false
+  disableUpdateChecks: false
+  disableSmartSort: false
+  enableErrorReporting: false
+sections:
+  - name: Information
+    displayData:
+      sortBy: default
+      rows: 1
+      cols: 1
+      collapsed: false
+      hideForGuests: false
+    items: []
+    widgets:
+      - type: clock
+        options:
+          timeZone: America/Chicago
+          format: en-GB
+          hiddenDate: false
+        id: 0_1158_clock
+      - type: weather
+        options:
+          apiKey: adf1612c51b4723c6310a85555559a64
+          city: Overland Park
+          units: imperial
+          hideDetails: false
+        id: 1_1158_weather
+  - name: System
+    icon: computer
+    displayData:
+      sortBy: alphabetical
+      rows: 1
+      cols: 1
+      collapsed: false
+      hideForGuests: false
+    items:
+      - title: Grafana
+        icon: generative
+        url: https://grafana.sethpyle.com
+        target: newtab
+        statusCheck: true
+        id: 0_645_grafana
+      - title: Traefik
+        description: Traefik Dashboard
+        icon: favicon
+        url: https://traefik.sethpyle.com/dashboard/
+        target: newtab
+        statusCheck: true
+        id: 1_645_traefik
+      - title: HAProxy
+        description: HAProxy Stats
+        icon: generative
+        url: http://cloud.sethpyle.com:8404/stats
+        target: newtab
+        statusCheck: true
+        id: 2_645_haproxy
+      - title: Pi-Hole
+        description: Pi-Hole Admin Page
+        icon: generative
+        url: http://cloud.sethpyle.com:8080/admin
+        target: newtab
+        id: 3_645_pihole
+  - name: Social Media Proxies
+    icon: twitter
+    displayData:
+      sortBy: most-used
+      rows: 1
+      cols: 1
+      collapsed: false
+      hideForGuests: false
+    items:
+      - title: Teddit
+        description: Teddit
+        icon: favicon
+        url: https://teddit.sethpyle.com
+        target: newtab
+        statusCheck: true
+        id: 0_1893_teddit
+      - title: Twitter
+        description: Personal Twitter Instance
+        icon: favicon
+        url: https://nitter.sethpyle.com
+        target: newtab
+        statusCheck: true
+        id: 1_1893_twitter
+      - title: Youtube
+        description: Invidous Instance
+        icon: favicon
+        url: https://youtube.sethpyle.com
+        target: newtab
+        statusCheck: true
+        id: 2_1893_youtube
+  - name: Media
+    icon: rss
+    displayData:
+      sortBy: default
+      rows: 1
+      cols: 1
+      collapsed: false
+      hideForGuests: false
+    items:
+      - title: FreshRSS
+        description: FreshRSS
+        icon: favicon
+        url: https://freshrss.sethpyle.com
+        target: newtab
+        statusCheck: true
+        id: 0_480_freshrss
+      - title: Library
+        description: Calibre Web
+        icon: generative
+        url: https://library.sethpyle.com
+        target: newtab
+        statusCheck: true
+        id: 1_480_library
+  - name: Utilities
+    displayData:
+      sortBy: default
+      rows: 1
+      cols: 1
+      collapsed: false
+      hideForGuests: false
+    items:
+      - title: Node-Red
+        description: Node-Red
+        icon: favicon
+        url: https://nodered.sethpyle.com
+        target: newtab
+        statusCheck: true
+        id: 0_956_nodered
+      - title: N8N
+        description: N8N
+        icon: favicon
+        url: https://n8n.sethpyle.com
+        target: newtab
+        statusCheck: true
+        statusCheckAcceptCodes: '401'
+        id: 1_956_nn
+      - title: SearXNG
+        description: SearXNG Search
+        icon: favicon
+        url: https://search.sethpyle.com
+        target: newtab
+        statusCheck: true
+        id: 2_956_searxng
+      - title: IRC
+        description: The Lounge IRC
+        icon: favicon
+        url: https://irc.sethpyle.com
+        target: newtab
+        statusCheck: true
+        id: 3_956_irc

@@ -39,10 +39,10 @@ spec:
             imagePullPolicy: {{ .Values.images.pgBackup.imagePullPolicy }}
             resources:
               requests:
-                memory: "2Gi"
-                cpu: "10m"
-              limits:
-                memory: "3Gi"
+                memory: "300Mi"
                 cpu: "500m"
+              limits:
+                memory: "600Mi"
+                cpu: "1"
           restartPolicy: OnFailure
       backoffLimit: 3

@@ -17,7 +17,7 @@ spec:
       volumes:
         - name: freshrss-data
           persistentVolumeClaim:
-            claimName: freshrss-pvc
+            claimName: freshrss-longhorn-pvc
       containers:
         - name: postgres
           image: {{ .Values.images.freshrss.image}}:{{ .Values.images.freshrss.tag }}

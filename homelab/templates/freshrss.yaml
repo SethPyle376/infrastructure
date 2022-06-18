@@ -1,52 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flame
+  name: freshrss
   labels:
-    app: flame
+    app: freshrss
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: flame
+      app: freshrss
   template:
     metadata:
       labels:
-        app: flame
+        app: freshrss
     spec:
       volumes:
-        - name: flame-data
+        - name: freshrss-data
           persistentVolumeClaim:
-            claimName: flame-pvc
+            claimName: freshrss-pvc
       containers:
-        - name: flame
-          image: {{ .Values.images.flame.image }}:{{ .Values.images.flame.tag }}
-          env:
-            - name: 'PASSWORD'
-              valueFrom:
-                secretKeyRef:
-                  name: flame
-                  key: password
-                  optional: false
+        - name: postgres
+          image: {{ .Values.images.freshrss.image}}:{{ .Values.images.freshrss.tag }}
           ports:
-            - containerPort: 5005
+            - containerPort: {{ .Values.freshrss.port }}
               protocol: TCP
           resources:
             requests:
-              memory: "64Mi"
+              memory: "256Mi"
               cpu: "100m"
             limits:
-              memory: "128Mi"
-              cpu: "250m"
+              memory: "512Mi"
+              cpu: "500m"
           volumeMounts:
-            - name: flame-data
-              mountPath: /app/data
-          imagePullPolicy: {{ .Values.images.flame.imagePullPolicy }}
+            - name: freshrss-data
+              mountPath: /config
+          imagePullPolicy: {{ .Values.images.freshrss.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: flame-pvc
+  name: freshrss-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -58,34 +51,34 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: flame
+  name: freshrss
   labels:
-    app: flame
+    app: freshrss
 spec:
   ports:
     - protocol: TCP
-      port: 5005
-      targetPort: 5005
+      port: {{ .Values.freshrss.port }}
+      targetPort: {{ .Values.freshrss.port }}
   selector:
-    app: flame
+    app: freshrss
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: flame-ingress
+  name: freshrss-ingress
 spec:
   tls:
     - secretName: "le-cert"
     - hosts:
-        - dashboard.sethpyle.com
+        - freshrss.sethpyle.com
   rules:
-    - host: dashboard.sethpyle.com
+    - host: freshrss.sethpyle.com
       http:
         paths:
           - pathType: ImplementationSpecific
             backend:
               service:
-                name: flame
+                name: freshrss
                 port:
-                  number: 5005
+                  number: {{ .Values.freshrss.port }}

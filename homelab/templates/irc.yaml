@@ -1,91 +1,86 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flame
+  name: irc
   labels:
-    app: flame
+    app: irc
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: flame
+      app: irc
   template:
     metadata:
       labels:
-        app: flame
+        app: irc
     spec:
       volumes:
-        - name: flame-data
+        - name: irc-data
           persistentVolumeClaim:
-            claimName: flame-pvc
+            claimName: irc-pvc
       containers:
-        - name: flame
-          image: {{ .Values.images.flame.image }}:{{ .Values.images.flame.tag }}
-          env:
-            - name: 'PASSWORD'
-              valueFrom:
-                secretKeyRef:
-                  name: flame
-                  key: password
-                  optional: false
+        - name: irc
+          image: {{ .Values.images.irc.image }}:{{ .Values.images.irc.tag }}
           ports:
-            - containerPort: 5005
+            - containerPort: {{ .Values.irc.port }}
               protocol: TCP
           resources:
             requests:
               memory: "64Mi"
-              cpu: "100m"
+              cpu: "50m"
             limits:
               memory: "128Mi"
-              cpu: "250m"
+              cpu: "100m"
           volumeMounts:
-            - name: flame-data
-              mountPath: /app/data
-          imagePullPolicy: {{ .Values.images.flame.imagePullPolicy }}
+            - name: irc-data
+              mountPath: /var/opt/thelounge
+          imagePullPolicy: {{ .Values.images.irc.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: flame-pvc
+  name: irc-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: local-path
   resources:
     requests:
-      storage: 500Mi
+      storage: 5Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: flame
+  name: irc
   labels:
-    app: flame
+    app: irc
 spec:
   ports:
     - protocol: TCP
-      port: 5005
-      targetPort: 5005
+      port: {{ .Values.irc.port }}
+      targetPort: {{ .Values.irc.port }}
   selector:
-    app: flame
+    app: irc
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: flame-ingress
+  name: irc-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
 spec:
   tls:
     - secretName: "le-cert"
     - hosts:
-        - dashboard.sethpyle.com
+        - irc.sethpyle.com
   rules:
-    - host: dashboard.sethpyle.com
+    - host: irc.sethpyle.com
       http:
         paths:
           - pathType: ImplementationSpecific
             backend:
               service:
-                name: flame
+                name: irc
                 port:
-                  number: 5005
+                  number: {{ .Values.irc.port }}

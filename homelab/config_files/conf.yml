@@ -162,6 +162,12 @@ sections:
       collapsed: false
       hideForGuests: false
     items:
+      - title: ZNC
+        description: ZNC
+        icon: favicon
+        url: http://ec2-44-201-161-47.compute-1.amazonaws.com:6501/
+        target: newtab
+        statusCheck: true
       - title: Node-Red
         description: Node-Red
         icon: favicon
@@ -169,14 +175,6 @@ sections:
         target: newtab
         statusCheck: true
         id: 0_956_nodered
-      - title: N8N
-        description: N8N
-        icon: favicon
-        url: https://n8n.sethpyle.com
-        target: newtab
-        statusCheck: true
-        statusCheckAcceptCodes: '401'
-        id: 1_956_nn
       - title: SearXNG
         description: SearXNG Search
         icon: favicon

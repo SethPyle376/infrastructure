@@ -105,6 +105,10 @@ images:
     image: lissy93/dashy
     tag: 2.1.0
     imagePullPolicy: IfNotPresent
+  wikijs:
+    image: ghcr.io/requarks/wiki
+    tag: 2.5
+    imagePullPolicy: IfNotPresent
 
 
 postgres:

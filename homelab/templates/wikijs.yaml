@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wikijs
+  labels:
+    app: wikijs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wikijs
+  template:
+    metadata:
+      labels:
+        app: wikijs
+    spec:
+      containers:
+        - name: wikijs
+          image: {{ .Values.images.wikijs.image }}:{{ .Values.images.wikijs.tag }}
+          env:
+            - name: DB_TYPE
+              value: postgres
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: wikijs
+            - name: DB_USER
+              value: wikijs
+            - name: DB_PASS
+              value: {{ .Values.wikijs.pass }}
+          ports: 
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2"
+          imagePullPolicy: {{ .Values.images.wikijs.imagePullPolicy }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wikijs
+  labels:
+    app: wikijs
+spec:
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: wikijs
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wikijs-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - wiki.sethpyle.com
+  rules:
+    - host: wiki.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: wikijs
+                port:
+                  number: 3000

@@ -175,13 +175,6 @@ sections:
         target: newtab
         statusCheck: true
         id: 0_956_nodered
-      - title: SearXNG
-        description: SearXNG Search
-        icon: favicon
-        url: https://search.sethpyle.com
-        target: newtab
-        statusCheck: true
-        id: 2_956_searxng
       - title: IRC
         description: The Lounge IRC
         icon: favicon

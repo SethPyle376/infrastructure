@@ -5,7 +5,7 @@ metadata:
   labels:
     app: dashy
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: dashy
@@ -60,9 +60,9 @@ spec:
   tls:
     - secretName: "le-cert"
     - hosts:
-        - dashy.sethpyle.com
+        - dashboard.sethpyle.com
   rules:
-    - host: dashy.sethpyle.com
+    - host: dashboard.sethpyle.com
       http:
         paths:
           - pathType: ImplementationSpecific

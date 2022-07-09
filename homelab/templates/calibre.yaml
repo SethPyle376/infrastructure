@@ -47,8 +47,8 @@ metadata:
   name: calibre-data-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
+    - ReadWriteMany
+  storageClassName: nfs-client
   resources:
     requests:
       storage: 5Gi
@@ -59,8 +59,8 @@ metadata:
   name: calibre-config-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
+    - ReadWriteMany
+  storageClassName: nfs-client
   resources:
     requests:
       storage: 1Gi

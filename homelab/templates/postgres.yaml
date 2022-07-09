@@ -18,6 +18,14 @@ spec:
         - name: postgresdb
           persistentVolumeClaim:
             claimName: postgres-pvc
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
       containers:
         - name: postgres
           image: {{ .Values.images.postgres.image}}:{{ .Values.images.postgres.tag }}
@@ -50,7 +58,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: nfs-client
   resources:
     requests:
       storage: 10Gi

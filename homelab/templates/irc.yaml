@@ -29,8 +29,8 @@ spec:
               memory: "64Mi"
               cpu: "50m"
             limits:
-              memory: "128Mi"
-              cpu: "100m"
+              memory: "256Mi"
+              cpu: "250m"
           volumeMounts:
             - name: irc-data
               mountPath: /var/opt/thelounge
@@ -43,7 +43,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: nfs-client
   resources:
     requests:
       storage: 5Gi

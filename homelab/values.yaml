@@ -109,6 +109,10 @@ images:
     image: ghcr.io/requarks/wiki
     tag: 2.5
     imagePullPolicy: IfNotPresent
+  gitea:
+    image: gitea/gitea
+    tag: 1.16
+    imagePullPolicy: IfNotPresent
 
 
 postgres:

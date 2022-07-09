@@ -162,6 +162,12 @@ sections:
       collapsed: false
       hideForGuests: false
     items:
+      - title: Gitea
+        description: Gitea
+        icon: favicon
+        url: https://git.sethpyle.com
+        target: newtab
+        statusCheck: true
       - title: ZNC
         description: ZNC
         icon: favicon
@@ -182,3 +188,9 @@ sections:
         target: newtab
         statusCheck: true
         id: 3_956_irc
+      - title: Wiki
+        description: WikiJS
+        icon: favicon
+        url: https://wiki.sethpyle.com
+        target: newtab
+        statusCheck: true

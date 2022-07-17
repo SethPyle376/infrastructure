@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firefly
+  labels:
+    app: firefly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: firefly
+  template:
+    metadata:
+      labels:
+        app: firefly
+    spec:
+      volumes:
+        - name: firefly-upload
+          persistentVolumeClaim:
+            claimName: firefly-upload-pvc
+      containers:
+        - name: firefly
+          image: {{ .Values.images.firefly.image }}:{{ .Values.images.firefly.tag }}
+          env:
+            - name: DB_CONNECTION
+              value: pgsql
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: '5432'
+            - name: DB_DATABASE
+              value: firefly
+            - name: DB_USERNAME
+              value: {{ .Values.firefly.user }}
+            - name: DB_PASSWORD
+              value: {{ .Values.firefly.pass }}
+            - name: TRUSTED_PROXIES
+              value: '**'
+            - name: APP_URL
+              value: 'https://firefly.sethpyle.com'
+            - name: APP_KEY
+              value: {{ .Values.firefly.key }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: firefly-upload
+              mountPath: /var/www/html/storage/upload
+          imagePullPolicy: {{ .Values.images.firefly.imagePullPolicy }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: firefly-upload-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: firefly
+  labels:
+    app: firefly
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: firefly
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: firefly-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - firefly.sethpyle.com
+  rules:
+    - host: firefly.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: firefly
+                port:
+                  number: 8080

@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fidi
+  labels:
+    app: fidi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fidi
+  template:
+    metadata:
+      labels:
+        app: fidi
+    spec:
+      containers:
+        - name: fidi
+          image: {{ .Values.images.fidi.image }}:{{ .Values.images.fidi.tag }}
+          env:
+            - name: FIREFLY_III_URL
+              value: 'http://firefly:8080'
+            - name: VANITY_URL
+              value: 'https://firefly.sethpyle.com'
+            - name: FIREFLY_III_ACCESS_TOKEN
+              value: {{ .Values.firefly.accessToken }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          imagePullPolicy: {{ .Values.images.fidi.imagePullPolicy }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fidi
+  labels:
+    app: fidi
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: fidi
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fidi-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - fidi.sethpyle.com
+  rules:
+    - host: fidi.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: fidi
+                port:
+                  number: 8080

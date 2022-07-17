@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airsonic
+  labels:
+    app: airsonic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airsonic
+  template:
+    metadata:
+      labels:
+        app: airsonic
+    spec:
+      volumes:
+        - name: airsonic-podcasts
+          persistentVolumeClaim:
+            claimName: airsonic-podcasts-pvc
+        - name: airsonic-config
+          persistentVolumeClaim:
+            claimName: airsonic-config-pvc
+        - name: airsonic-music
+          persistentVolumeClaim:
+            claimName: airsonic-music-pvc
+      containers:
+        - name: airsonic
+          image: {{ .Values.images.airsonic.image }}:{{ .Values.images.airsonic.tag }}
+          ports:
+            - containerPort: 4040
+              protocol: TCP
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1024Mi"
+              cpu: "1"
+          volumeMounts:
+            - name: airsonic-podcasts
+              mountPath: /podcasts
+            - name: airsonic-config
+              mountPath: /config
+            - name: airsonic-music
+              mountPath: /music
+          imagePullPolicy: {{ .Values.images.airsonic.imagePullPolicy }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: airsonic-podcasts-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 25Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: airsonic-config-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+---
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: airsonic-music-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: airsonic
+  labels:
+    app: airsonic
+spec:
+  ports:
+    - protocol: TCP
+      port: 4040
+      targetPort: 4040
+  selector:
+    app: airsonic
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: airsonic-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - podcasts.sethpyle.com
+  rules:
+    - host: podcasts.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: airsonic
+                port:
+                  number: 4040

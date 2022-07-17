@@ -24,14 +24,14 @@ images:
   pgBackup:
     image: sethpyle/pg-backup
     tag: 1.0.1
-    imagePullPolicy: IfNotPresent
+    imagePullPolicy: Always
   calibre:
     image: linuxserver/calibre-web
     tag: 0.6.17
     imagePullPolicy: IfNotPresent
   airsonic:
-    image: linuxserver/airsonic
-    tag: 10.6.2
+    image: linuxserver/airsonic-advanced
+    tag: 11.0.0
     imagePullPolicy: IfNotPresent
   n8n:
     image: n8nio/n8n
@@ -79,7 +79,7 @@ images:
     imagePullPolicy: IfNotPresent
   nitter:
     image: quay.io/unixfox/nitter
-    tag: build-20220604
+    tag: build-20220705
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious
@@ -113,7 +113,14 @@ images:
     image: gitea/gitea
     tag: 1.16
     imagePullPolicy: IfNotPresent
-
+  firefly:
+    image: fireflyiii/core
+    tag: version-5.7.9
+    imagePullPolicy: IfNotPresent
+  fidi:
+    image: fireflyiii/data-importer
+    tag: latest
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:
@@ -171,3 +178,9 @@ youtube:
 
 freshrss:
   port: 80
+
+firefly:
+  key:
+  user:
+  pass:
+  accessToken:

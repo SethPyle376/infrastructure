@@ -15,4 +15,9 @@ helm upgrade --install homelab homelab/ \
 --set planka.connectionString=$PLANKA_CONNECTION_STRING \
 --set planka.secretKey=$PLANKA_SECRET_KEY \
 --set teddit.appID=$TEDDIT_APP_ID \
---set wikijs.pass=$WIKIJS_PASS
+--set wikijs.pass=$WIKIJS_PASS \
+--set firefly.key=$FIREFLY_KEY \
+--set firefly.user=$FIREFLY_USER \
+--set firefly.pass=$FIREFLY_PASS \
+--set firefly.accessToken=$FIREFLY_ACCESS_TOKEN
+

@@ -101,6 +101,12 @@ sections:
         url: http://cloud.sethpyle.com:8080/admin
         target: newtab
         id: 3_645_pihole
+      - title: Storage
+        description: Synology Admin Page
+        icon: generative
+        url: https://storage.sethpyle.com
+        target: newtab
+        statusCheck: true
   - name: Social Media Proxies
     icon: twitter
     displayData:

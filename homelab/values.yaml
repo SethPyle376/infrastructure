@@ -83,7 +83,7 @@ images:
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious
-    tag: b5c54b4e410709d93423ca019aaf30579cb53ace-arm64
+    tag: 5e090778aef347e20e118e54073b5b6eb5035ebd-arm64
     imagePullPolicy: IfNotPresent
   nocodb:
     image: nocodb/nocodb
@@ -119,6 +119,14 @@ images:
     imagePullPolicy: IfNotPresent
   fidi:
     image: fireflyiii/data-importer
+    tag: latest
+    imagePullPolicy: IfNotPresent
+  ngircd:
+    image: linuxserver/ngircd
+    tag: version-26.1-r0
+    imagePullPolicy: IfNotPresent
+  discordIrc:
+    image: sethpyle/discord-irc
     tag: latest
     imagePullPolicy: IfNotPresent
 

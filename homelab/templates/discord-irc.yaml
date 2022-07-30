@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discord-irc
+  labels:
+    app: discord-irc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: discord-irc
+  template:
+    metadata:
+      labels:
+        app: discord-irc
+    spec:
+      volumes:
+        - name: discord-irc-config
+          secret:
+            secretName: irc-discord-bridge-config
+      containers:
+        - name: discord-irc
+          image: {{ .Values.images.discordIrc.image }}:{{ .Values.images.discordIrc.tag }}
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          volumeMounts:
+            - name: discord-irc-config
+              mountPath: /config/config.json
+              subPath: config.json
+          imagePullPolicy: {{ .Values.images.discordIrc.imagePullPolicy }}

@@ -129,6 +129,10 @@ images:
     image: sethpyle/discord-irc
     tag: latest
     imagePullPolicy: IfNotPresent
+  shiori:
+    image: nicholaswilde/shiori
+    tag: version-v1.5.0
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:

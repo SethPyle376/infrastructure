@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shiori
+  labels:
+    app: shiori
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shiori
+  template:
+    metadata:
+      labels:
+        app: shiori
+    spec:
+      volumes:
+        - name: shiori-data
+          persistentVolumeClaim:
+            claimName: shiori-data-pvc
+      containers:
+        - name: shiori
+          image: {{ .Values.images.shiori.image }}:{{ .Values.images.shiori.tag }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: SHIORI_PG_USER
+              value: shiori
+            - name: SHIORI_PG_PASS
+              value: {{ .Values.postgres.pass }}
+            - name: SHIORI_PG_NAME
+              value: shiori
+            - name: SHIORI_PG_HOST
+              value: postgres
+            - name: SHIORI_PG_PORT
+              value: "5432"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: shiori-data
+              mountPath: /data
+          imagePullPolicy: {{ .Values.images.shiori.imagePullPolicy }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shiori-data-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shiori
+  labels:
+    app: shiori
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: shiori
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shiori-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - bookmarks.sethpyle.com
+  rules:
+    - host: bookmarks.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: shiori
+                port:
+                  number: 8080

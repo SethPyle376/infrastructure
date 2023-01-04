@@ -37,6 +37,12 @@ spec:
               value: 'redis'
             - name: DOMAIN_REPLACEMENTS
               value: '[["twitter.com", "nitter.sethpyle.com"], ["m.youtube.com", "youtube.sethpyle.com"], ["www.youtube.com", "youtube.sethpyle.com"], ["youtube.com", "youtube.sethpyle.com"], ["youtu.be", "youtube.sethpyle.com"]]'
+            - name: USE_REDDIT_OAUTH
+              value: 'true'
+            - name: REDDIT_APP_ID
+              value: {{ .Values.teddit.appID }}
+            - name: THEME
+              value: 'nord'
           resources:
             requests:
               memory: "128Mi"

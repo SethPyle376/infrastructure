@@ -19,5 +19,7 @@ helm upgrade --install homelab homelab/ \
 --set firefly.key=$FIREFLY_KEY \
 --set firefly.user=$FIREFLY_USER \
 --set firefly.pass=$FIREFLY_PASS \
---set firefly.accessToken=$FIREFLY_ACCESS_TOKEN
-
+--set firefly.accessToken=$FIREFLY_ACCESS_TOKEN \
+--set vikunja.mailerUsername=$VIKUNJA_MAILER_USERNAME \
+--set vikunja.mailerPassword=$VIKUNJA_MAILER_PASSWORD \
+--set githubRunner.accessToken=$GITHUB_RUNNER_ACCESS_TOKEN

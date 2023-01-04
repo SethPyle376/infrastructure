@@ -53,8 +53,8 @@ metadata:
   name: gitea-pvc
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-client
+    - ReadWriteOnce
+  storageClassName: local-path
   resources:
     requests:
       storage: 5Gi

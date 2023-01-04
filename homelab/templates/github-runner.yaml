@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: actions-runner
+  namespace: homelab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: actions-runner
+  template:
+    metadata:
+      labels:
+        app: actions-runner
+    spec:
+      volumes:
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
+      containers:
+      - name: runner
+        image: myoung34/github-runner:latest
+        env:
+        - name: ACCESS_TOKEN
+          value: {{ .Values.githubRunner.accessToken }}
+        - name: RUNNER_SCOPE
+          value: "repo"
+        - name: REPO_URL
+          value: "https://github.com/SethPyle376/rs_api" 
+        - name: RUNNER_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        volumeMounts:
+        - name: dockersock
+          mountPath: /var/run/docker.sock

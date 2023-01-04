@@ -18,9 +18,9 @@ appConfig:
   widgetsAlwaysUseProxy: false
   webSearch:
     disableWebSearch: false
-    searchEngine: duckduckgo
+    searchEngine: custom
+    customSearchEngine: 'https://search.sethpyle.com/search?q='
     openingMethod: newtab
-    searchBangs: {}
   enableFontAwesome: true
   enableMaterialDesignIcons: false
   hideComponents:
@@ -83,7 +83,7 @@ sections:
         id: 0_645_grafana
       - title: Traefik
         description: Traefik Dashboard
-        icon: favicon
+        icon: generative
         url: https://traefik.sethpyle.com/dashboard/
         target: newtab
         statusCheck: true
@@ -91,22 +91,10 @@ sections:
       - title: HAProxy
         description: HAProxy Stats
         icon: generative
-        url: http://cloud.sethpyle.com:8404/stats
+        url: http://overlord.sethpyle.com:8080
         target: newtab
         statusCheck: true
         id: 2_645_haproxy
-      - title: Pi-Hole
-        description: Pi-Hole Admin Page
-        icon: generative
-        url: http://cloud.sethpyle.com:8080/admin
-        target: newtab
-        id: 3_645_pihole
-      - title: Storage
-        description: Synology Admin Page
-        icon: generative
-        url: https://storage.sethpyle.com
-        target: newtab
-        statusCheck: true
   - name: Social Media Proxies
     icon: twitter
     displayData:
@@ -153,6 +141,12 @@ sections:
         target: newtab
         statusCheck: true
         id: 0_480_freshrss
+      - title: Bookmarks
+        description: Bookmarks
+        icon: generative
+        url: https://bookmarks.sethpyle.com
+        target: newtab
+        statusCheck: true
       - title: Library
         description: Calibre Web
         icon: generative
@@ -194,6 +188,12 @@ sections:
         target: newtab
         statusCheck: true
         id: 3_956_irc
+      - title: Vikunja
+        description: Vikunja
+        icon: favicon
+        url: https://tasks.sethpyle.com
+        target: newtab
+        statusCheck: true
       - title: Wiki
         description: WikiJS
         icon: favicon

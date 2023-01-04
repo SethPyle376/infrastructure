@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vikunja-api
+  labels:
+    app: vikunja-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vikunja-api
+  template:
+    metadata:
+      labels:
+        app: vikunja-api
+    spec:
+      volumes:
+        - name: vikunja-data
+          persistentVolumeClaim:
+            claimName: vikunja-data-pvc
+      containers:
+        - name: vikunja-api
+          image: {{ .Values.images.vikunjaApi.image }}:{{ .Values.images.vikunjaApi.tag }}
+          env:
+            - name: VIKUNJA_DATABASE_TYPE
+              value: postgres
+            - name: VIKUNJA_DATABASE_HOST
+              value: postgres
+            - name: VIKUNJA_DATABASE_DATABASE
+              value: vikunja
+            - name: VIKUNJA_DATABASE_USER
+              value: vikunja
+            - name: VIKUNJA_DATABASE_PASSWORD
+              value: {{ .Values.postgres.pass }}
+            - name: VIKUNJA_SERVICE_JWTSECRET
+              value: {{ .Values.postgres.pass }}
+            - name: VIKUNJA_SERVICE_FRONTENDURL
+              value: "https://tasks.sethpyle.com"
+            - name: VIKUNJA_SERVICE_ENABLEEMAILREMINDERS
+              value: "1"
+            - name: VIKUNJA_MAILER_ENABLED
+              value: "1"
+            - name: VIKUNJA_MAILER_FORCESSL
+              value: "1"
+            - name: VIKUNJA_MAILER_HOST
+              value: "email-smtp.us-east-1.amazonaws.com"
+            - name: VIKUNJA_MAILER_PORT
+              value: "587"
+            - name: VIKUNJA_MAILER_USERNAME
+              value: {{ .Values.vikunja.mailerUsername }}
+            - name: VIKUNJA_MAILER_PASSWORD
+              value: {{ .Values.vikunja.mailerPassword }}
+            - name: VIKUNJA_MAILER_FROMEMAIL
+              value: "homelab@sethpyle.com"
+          ports:
+            - containerPort: 3456
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+          volumeMounts:
+            - name: vikunja-data
+              mountPath: /app/vikunja/files
+          imagePullPolicy: {{ .Values.images.vikunjaApi.imagePullPolicy }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vikunja-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vikunja-api
+  labels:
+    app: vikunja-api
+spec:
+  ports:
+    - protocol: TCP
+      port: 3456
+      targetPort: 3456
+  selector:
+    app: vikunja-api
+  type: ClusterIP

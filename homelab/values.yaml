@@ -23,7 +23,7 @@ images:
     imagePullPolicy: IfNotPresent
   pgBackup:
     image: sethpyle/pg-backup
-    tag: 1.0.1
+    tag: 1.1.0
     imagePullPolicy: Always
   calibre:
     image: linuxserver/calibre-web
@@ -51,7 +51,7 @@ images:
     imagePullPolicy: IfNotPresent
   searxng:
     image: searxng/searxng
-    tag: 2022.06.18-62e88e63
+    tag: 2022.11.19-b5371b7a
     imagePullPolicy: IfNotPresent
   grafana:
     image: grafana/grafana
@@ -63,14 +63,14 @@ images:
     imagePullPolicy: IfNotPresent
   homeassistant:
     image: homeassistant/home-assistant
-    tag: 2021.12
+    tag: 2022.8.7
     imagePullPolicy: IfNotPresent
   planka:
     image: meltyshev/planka
     tag: 1.0.0-beta
     imagePullPolicy: IfNotPresent
   teddit:
-    image: 1337kavin/teddit
+    image: teddit/teddit
     tag: latest
     imagePullPolicy: IfNotPresent
   redis:
@@ -83,7 +83,7 @@ images:
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious
-    tag: 5e090778aef347e20e118e54073b5b6eb5035ebd-arm64
+    tag: 5160d8bae39dc5cc5d51abee90571a03c08d0f2b-arm64
     imagePullPolicy: IfNotPresent
   nocodb:
     image: nocodb/nocodb
@@ -91,7 +91,7 @@ images:
     imagePullPolicy: IfNotPresent
   freshrss:
     image: lscr.io/linuxserver/freshrss
-    tag: 1.19.2
+    tag: 1.20.0
     imagePullPolicy: IfNotPresent
   piholeexporter:
     image: ekofr/pihole-exporter
@@ -107,7 +107,7 @@ images:
     imagePullPolicy: IfNotPresent
   wikijs:
     image: ghcr.io/requarks/wiki
-    tag: 2.5
+    tag: 2.5.291
     imagePullPolicy: IfNotPresent
   gitea:
     image: gitea/gitea
@@ -132,6 +132,14 @@ images:
   shiori:
     image: nicholaswilde/shiori
     tag: version-v1.5.0
+    imagePullPolicy: IfNotPresent
+  vikunjaApi:
+    image: vikunja/api
+    tag: 0.20.0
+    imagePullPolicy: IfNotPresent
+  vikunjaFrontend:
+    image: vikunja/frontend
+    tag: 0.20.0
     imagePullPolicy: IfNotPresent
 
 postgres:
@@ -168,7 +176,7 @@ searxng:
   port: 8080
   secret:
   baseURL:
-  replicaCount: 0
+  replicaCount: 1
 
 planka:
   port: 1337
@@ -195,4 +203,11 @@ firefly:
   key:
   user:
   pass:
+  accessToken:
+
+vikunja:
+  mailerUsername:
+  mailerPassword:
+
+githubRunner:
   accessToken:

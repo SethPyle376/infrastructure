@@ -18,6 +18,18 @@ spec:
             - name: pg-backup
               image: {{ .Values.images.pgBackup.image }}:{{ .Values.images.pgBackup.tag }}
               env:
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: 'aws-storage-creds'
+                      key: 'AWS_ACCESS_KEY_ID'
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: 'aws-storage-creds'
+                      key: 'AWS_SECRET_ACCESS_KEY'
+                - name: S3_BUCKET
+                  value: {{ .Values.pgBackup.s3Bucket }}
                 - name: PG_USER
                   value: {{ .Values.postgres.user }}
                 - name: PG_PASS
@@ -52,8 +64,8 @@ metadata:
   name: pg-backup-pvc
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-client
+    - ReadWriteOnce
+  storageClassName: local-path
   resources:
     requests:
       storage: 5Gi

@@ -42,8 +42,8 @@ metadata:
   name: ngircd-config-pvc
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-client
+    - ReadWriteOnce
+  storageClassName: local-path
   resources:
     requests:
       storage: 1Gi
@@ -62,3 +62,25 @@ spec:
   selector:
     app: ngircd
   type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ngircd-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - ngircd.sethpyle.com
+  rules:
+    - host: ngircd.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ngircd
+                port:
+                  number: 6667

@@ -141,6 +141,14 @@ images:
     image: vikunja/frontend
     tag: 0.20.0
     imagePullPolicy: IfNotPresent
+  rsApi:
+    image: ghcr.io/sethpyle376/rs_api_server
+    tag: v0.1.2
+    imagePullPolicy: IfNotPresent
+  cloudflared:
+    image: cloudflare/cloudflared
+    tag: 2022.12.1
+    imagePullPolicy: IfNotPresent
 
 postgres:
   user:
@@ -211,3 +219,6 @@ vikunja:
 
 githubRunner:
   accessToken:
+
+cloudflared:
+  token:

@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rs-api
+  labels:
+    app: rs-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rs-api
+  template:
+    metadata:
+      labels:
+        app: rs-api
+    spec:
+      imagePullSecrets:
+        - name: dockerconfigjson-github-com
+      containers:
+        - name: rs-api
+          image: {{ .Values.images.rsApi.image }}:{{ .Values.images.rsApi.tag }}
+          env:
+            - name: DB_URI
+              value: "postgresql://rs_api:rs_api@postgres"
+            - name: ROCKET_PORT
+              value: "8000"
+            - name: ROCKET_ADDRESS
+              value: "0.0.0.0"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rs-api
+  labels:
+    app: rs-api
+spec:
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  selector:
+    app: rs-api
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rs-api-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - rsapi.sethpyle.com
+  rules:
+    - host: rsapi.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: rs-api
+                port:
+                  number: 8000

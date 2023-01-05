@@ -22,4 +22,5 @@ helm upgrade --install homelab homelab/ \
 --set firefly.accessToken=$FIREFLY_ACCESS_TOKEN \
 --set vikunja.mailerUsername=$VIKUNJA_MAILER_USERNAME \
 --set vikunja.mailerPassword=$VIKUNJA_MAILER_PASSWORD \
---set githubRunner.accessToken=$GITHUB_RUNNER_ACCESS_TOKEN
+--set githubRunner.accessToken=$GITHUB_RUNNER_ACCESS_TOKEN \
+--set cloudflared.token=$CLOUDFLARED_TOKEN

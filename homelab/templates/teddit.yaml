@@ -43,6 +43,8 @@ spec:
               value: {{ .Values.teddit.appID }}
             - name: THEME
               value: 'nord'
+            - name: REDIS_ENABLED
+              value: 'false'
           resources:
             requests:
               memory: "128Mi"

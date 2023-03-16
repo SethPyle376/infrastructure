@@ -5,7 +5,7 @@ metadata:
   labels:
     app: rs-api
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: rs-api
@@ -26,6 +26,10 @@ spec:
               value: "8000"
             - name: ROCKET_ADDRESS
               value: "0.0.0.0"
+            - name: ROCKET_PROFILE
+              value: "debug"
+            - name: ROCKET_LOG_LEVEL
+              value: "normal"
           resources:
             requests:
               memory: "64Mi"

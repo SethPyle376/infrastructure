@@ -78,12 +78,12 @@ images:
     tag: 6.2.6
     imagePullPolicy: IfNotPresent
   nitter:
-    image: quay.io/unixfox/nitter
-    tag: build-20220705
+    image: zedeus/nitter
+    tag: bc219aa792cc0e4117888b2036a969559f4f2689-arm64
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious
-    tag: 5160d8bae39dc5cc5d51abee90571a03c08d0f2b-arm64
+    tag: 4e3884cae749ffcc39b77f2dcb6bc336c255d2e5-arm64
     imagePullPolicy: IfNotPresent
   nocodb:
     image: nocodb/nocodb
@@ -143,7 +143,7 @@ images:
     imagePullPolicy: IfNotPresent
   rsApi:
     image: ghcr.io/sethpyle376/rs_api_server
-    tag: v0.1.2
+    tag: v0.3.0
     imagePullPolicy: IfNotPresent
   cloudflared:
     image: cloudflare/cloudflared

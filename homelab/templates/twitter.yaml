@@ -14,22 +14,13 @@ spec:
       labels:
         app: nitter
     spec:
+      volumes:
+        - name: nitter-config
+          configMap:
+            name: nitter-configmap
       containers:
         - name: nitter
           image: {{ .Values.images.nitter.image }}:{{ .Values.images.nitter.tag }}
-          env:
-            - name: NITTER_HOST
-              value: 'nitter.sethpyle.com'
-            - name: REDIS_HOST
-              value: 'redis'
-            - name: REDIS_PORT
-              value: '6379'
-            - name: REPLACE_TWITTER
-              value: 'nitter.sethpyle.com'
-            - name: REPLACE_YOUTUBE
-              value: 'youtube.sethpyle.com'
-            - name: TITLE
-              value: 'Seths Private Twitter'
           resources:
             requests:
               memory: "50Mi"
@@ -41,6 +32,17 @@ spec:
             - containerPort: {{ .Values.nitter.port }}
               protocol: TCP
           imagePullPolicy: {{ .Values.images.nitter.imagePullPolicy }}
+          volumeMounts:
+            - name: nitter-config
+              mountPath: /src/nitter.conf
+              subPath: nitter.conf
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nitter-configmap
+data:
+{{ (.Files.Glob "config_files/nitter.conf").AsConfig | indent 2 }}
 ---
 apiVersion: v1
 kind: Service

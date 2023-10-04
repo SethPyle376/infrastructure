@@ -18,6 +18,9 @@ spec:
         - name: vikunja-data
           persistentVolumeClaim:
             claimName: vikunja-data-pvc-2
+        - name: vikunja-config
+          secret:
+            secretName: vikunja-config
       containers:
         - name: vikunja-api
           image: {{ .Values.images.vikunjaApi.image }}:{{ .Values.images.vikunjaApi.tag }}
@@ -67,6 +70,9 @@ spec:
           volumeMounts:
             - name: vikunja-data
               mountPath: /app/vikunja/files
+            - name: vikunja-config
+              mountPath: /app/vikunja/config.yml
+              subPath: config.yml
           imagePullPolicy: {{ .Values.images.vikunjaApi.imagePullPolicy }}
 ---
 apiVersion: v1

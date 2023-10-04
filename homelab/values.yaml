@@ -11,7 +11,7 @@ images:
     imagePullPolicy: IfNotPresent
   postgres:
     image: postgres
-    tag: 9.6.23
+    tag: 15.3
     imagePullPolicy: IfNotPresent
   rss:
     image: wangqiru/ttrss
@@ -51,7 +51,7 @@ images:
     imagePullPolicy: IfNotPresent
   searxng:
     image: searxng/searxng
-    tag: 2022.11.19-b5371b7a
+    tag: 2023.10.1-d56b31d67
     imagePullPolicy: IfNotPresent
   grafana:
     image: grafana/grafana
@@ -63,7 +63,7 @@ images:
     imagePullPolicy: IfNotPresent
   homeassistant:
     image: homeassistant/home-assistant
-    tag: 2022.8.7
+    tag: 2023.9
     imagePullPolicy: IfNotPresent
   planka:
     image: meltyshev/planka
@@ -72,18 +72,18 @@ images:
   teddit:
     image: teddit/teddit
     tag: latest
-    imagePullPolicy: IfNotPresent
+    imagePullPolicy: Always
   redis:
     image: redis
     tag: 6.2.6
     imagePullPolicy: IfNotPresent
   nitter:
     image: zedeus/nitter
-    tag: bc219aa792cc0e4117888b2036a969559f4f2689-arm64
+    tag: d7ca353a55ea3440a2ec1f09155951210a374cc7-arm64
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious
-    tag: 4e3884cae749ffcc39b77f2dcb6bc336c255d2e5-arm64
+    tag: 34508966027fce3f460d9670eeecef67b92565a0-arm64
     imagePullPolicy: IfNotPresent
   nocodb:
     image: nocodb/nocodb
@@ -91,7 +91,7 @@ images:
     imagePullPolicy: IfNotPresent
   freshrss:
     image: lscr.io/linuxserver/freshrss
-    tag: 1.20.0
+    tag: 1.21.0
     imagePullPolicy: IfNotPresent
   piholeexporter:
     image: ekofr/pihole-exporter
@@ -103,7 +103,7 @@ images:
     imagePullPolicy: IfNotPresent
   dashy:
     image: lissy93/dashy
-    tag: 2.1.0
+    tag: 2.1.1
     imagePullPolicy: IfNotPresent
   wikijs:
     image: ghcr.io/requarks/wiki
@@ -111,7 +111,7 @@ images:
     imagePullPolicy: IfNotPresent
   gitea:
     image: gitea/gitea
-    tag: 1.16
+    tag: 1.20.4-linux-arm64
     imagePullPolicy: IfNotPresent
   firefly:
     image: fireflyiii/core
@@ -129,25 +129,61 @@ images:
     image: sethpyle/discord-irc
     tag: latest
     imagePullPolicy: IfNotPresent
-  shiori:
-    image: nicholaswilde/shiori
-    tag: version-v1.5.0
+  linkding:
+    image: sissbruecker/linkding
+    tag: 1.17.2
     imagePullPolicy: IfNotPresent
   vikunjaApi:
     image: vikunja/api
-    tag: 0.20.0
+    tag: 0.21.0
     imagePullPolicy: IfNotPresent
   vikunjaFrontend:
     image: vikunja/frontend
-    tag: 0.20.0
+    tag: 0.21.0
     imagePullPolicy: IfNotPresent
   rsApi:
     image: ghcr.io/sethpyle376/rs_api_server
-    tag: v0.3.0
+    tag: v0.6.0
     imagePullPolicy: IfNotPresent
   cloudflared:
     image: cloudflare/cloudflared
     tag: 2022.12.1
+    imagePullPolicy: IfNotPresent
+  changedetection:
+    image: linuxserver/changedetection.io
+    tag: 0.40.3
+    imagePullPolicy: IfNotPresent
+  rssBridge:
+    image: rssbridge/rss-bridge
+    tag: sha-8486c0f
+    imagePullPolicy: IfNotPresent
+  trilium:
+    image: zadam/trilium
+    tag: 0.59-latest
+    imagePullPolicy: IfNotPresent
+  joplin:
+    image: florider89/joplin-server
+    tag: 2.10.11
+    imagePullPolicy: IfNotPresent
+  lemmy:
+    image: dessalines/lemmy
+    tag: 0.17.3-linux-arm64
+    imagePullPolicy: IfNotPresent
+  lemmyUi:
+    image: dessalines/lemmy-ui
+    tag: 0.17.3-linux-arm64
+    imagePullPolicy: IfNotPresent
+  pictrs:
+    image: asonix/pictrs
+    tag: 0.3.3
+    imagePullPolicy: IfNotPresent
+  blog:
+    image: ghcr.io/sethpyle376/blog
+    tag: v1.1.0
+    imagePullPolicy: IfNotPresent
+  authentik:
+    image: ghcr.io/goauthentik/server
+    tag: 2023.8.3
     imagePullPolicy: IfNotPresent
 
 postgres:
@@ -222,3 +258,9 @@ githubRunner:
 
 cloudflared:
   token:
+
+cloudflaredLemmy:
+  token:
+
+authentik:
+  secretKey:

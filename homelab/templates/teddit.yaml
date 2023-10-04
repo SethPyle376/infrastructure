@@ -37,21 +37,21 @@ spec:
               value: 'redis'
             - name: DOMAIN_REPLACEMENTS
               value: '[["twitter.com", "nitter.sethpyle.com"], ["m.youtube.com", "youtube.sethpyle.com"], ["www.youtube.com", "youtube.sethpyle.com"], ["youtube.com", "youtube.sethpyle.com"], ["youtu.be", "youtube.sethpyle.com"]]'
-            - name: USE_REDDIT_OAUTH
-              value: 'true'
-            - name: REDDIT_APP_ID
-              value: {{ .Values.teddit.appID }}
+            # - name: USE_REDDIT_OAUTH
+            #   value: 'true'
+            # - name: REDDIT_APP_ID
+            #   value: {{ .Values.teddit.appID }}
             - name: THEME
               value: 'nord'
             - name: REDIS_ENABLED
-              value: 'false'
+              value: 'true'
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "500m"
-            limits:
               memory: "512Mi"
               cpu: "1"
+            limits:
+              memory: "1Gi"
+              cpu: "2"
           imagePullPolicy: {{ .Values.images.teddit.imagePullPolicy }}
 ---
 apiVersion: v1

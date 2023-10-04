@@ -17,7 +17,7 @@ spec:
       volumes:
         - name: vikunja-data
           persistentVolumeClaim:
-            claimName: vikunja-data-pvc
+            claimName: vikunja-data-pvc-2
       containers:
         - name: vikunja-api
           image: {{ .Values.images.vikunjaApi.image }}:{{ .Values.images.vikunjaApi.tag }}
@@ -45,13 +45,15 @@ spec:
             - name: VIKUNJA_MAILER_HOST
               value: "email-smtp.us-east-1.amazonaws.com"
             - name: VIKUNJA_MAILER_PORT
-              value: "587"
+              value: "465"
             - name: VIKUNJA_MAILER_USERNAME
               value: {{ .Values.vikunja.mailerUsername }}
             - name: VIKUNJA_MAILER_PASSWORD
               value: {{ .Values.vikunja.mailerPassword }}
             - name: VIKUNJA_MAILER_FROMEMAIL
               value: "homelab@sethpyle.com"
+            - name: VIKUNJA_SERVICE_ENABLEREGISTRATION
+              value: "false"
           ports:
             - containerPort: 3456
               protocol: TCP
@@ -70,7 +72,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: vikunja-data-pvc
+  name: vikunja-data-pvc-2
 spec:
   accessModes:
     - ReadWriteOnce

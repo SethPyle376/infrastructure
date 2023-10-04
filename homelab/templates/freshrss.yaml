@@ -21,6 +21,9 @@ spec:
       containers:
         - name: postgres
           image: {{ .Values.images.freshrss.image}}:{{ .Values.images.freshrss.tag }}
+          env:
+            - name: "TZ"
+              value: "America/Chicago"
           ports:
             - containerPort: {{ .Values.freshrss.port }}
               protocol: TCP

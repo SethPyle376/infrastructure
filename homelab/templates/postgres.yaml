@@ -17,7 +17,7 @@ spec:
       volumes:
         - name: postgresdb
           persistentVolumeClaim:
-            claimName: postgres-pvc
+            claimName: postgres-pvc-new
       affinity:
         nodeAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -55,6 +55,18 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc-new
 spec:
   accessModes:
     - ReadWriteOnce

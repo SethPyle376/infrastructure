@@ -18,9 +18,29 @@ spec:
         - name: grafana
           persistentVolumeClaim:
             claimName: grafana-pvc
+        - name: grafana-config
+          persistentVolumeClaim:
+            claimName: grafana-config-pvc
       containers:
         - name: grafana
           image: {{ .Values.images.grafana.image }}:{{ .Values.images.grafana.tag }}
+          env:
+            - name: "GF_SERVER_ROOT_URL"
+              value: "https://grafana.sethpyle.com"
+            - name: "GF_AUTH_GENERIC_OAUTH_SCOPES"
+              value: "openid profile email"
+            - name: "GF_AUTH_GENERIC_OAUTH_CLIENT_ID"
+              value: "kVnxdJtUo1YiUhVBW6PPgJlgtd2lVxTYNoC66Hvj"
+            - name: "GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET"
+              value: "y2NKCxi7jBvza8B8XTHy7B23r7dbafd655topJsrUaFt5goAJvKIDG2poTmmD5Cqc8flay3vFcgHCFj1CqyAZpy2uJb2sjOSLy5t50UFfHGa59AowpTjlqOjGoNkKtbG"
+            - name: "GF_AUTH_GENERIC_OAUTH_AUTH_URL"
+              value: "https://auth.sethpyle.com/application/o/authorize/"
+            - name: "GF_AUTH_GENERIC_OAUTH_TOKEN_URL"
+              value: "https://auth.sethpyle.com/application/o/token/"
+            - name: "GF_AUTH_GENERIC_OAUTH_API_URL"
+              value: "https://auth.sethpyle.com/application/o/userinfo/"
+            - name: "GF_AUTH_GENERIC_OAUTH_ENABLED"
+              value: "true"
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -29,8 +49,8 @@ spec:
               memory: "64Mi"
               cpu: "10m"
             limits:
-              memory: "256Mi"
-              cpu: "100m"
+              memory: "500Mi"
+              cpu: "1"
           volumeMounts:
             - name: grafana
               mountPath: /var/lib/grafana
@@ -40,6 +60,18 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: grafana-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-config-pvc
 spec:
   accessModes:
     - ReadWriteOnce

@@ -4,7 +4,7 @@ metadata:
   name: actions-runner
   namespace: homelab
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     matchLabels:
       app: actions-runner

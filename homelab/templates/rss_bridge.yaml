@@ -1,86 +1,80 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ngircd
+  name: rss-bridge
   labels:
-    app: ngircd
+    app: rss-bridge
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
-      app: ngircd
+      app: rss-bridge
   template:
     metadata:
       labels:
-        app: ngircd
+        app: rss-bridge
     spec:
       volumes:
-        - name: ngircd-config
+        - name: rss-bridge-data
           persistentVolumeClaim:
-            claimName: ngircd-config-pvc
+            claimName: rss-bridge-pvc
       containers:
-        - name: ngircd
-          image: {{ .Values.images.ngircd.image }}:{{ .Values.images.ngircd.tag }}
-          ports:
-            - containerPort: 6667
-              protocol: TCP
+        - name: rss-bridge
+          image: {{ .Values.images.rssBridge.image }}:{{ .Values.images.rssBridge.tag }}
           resources:
             requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
               memory: "128Mi"
               cpu: "100m"
-            limits:
-              memory: "256Mi"
-              cpu: "250m"
           volumeMounts:
-            - name: ngircd-config
+            - name: rss-bridge-data
               mountPath: /config
-          imagePullPolicy: {{ .Values.images.ngircd.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ngircd-config-pvc
+  name: rss-bridge-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: local-path
   resources:
     requests:
-      storage: 1Gi
+      storage: 500Mi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: ngircd
+  name: rss-bridge
   labels:
-    app: ngircd
+    app: rss-bridge
 spec:
   ports:
     - protocol: TCP
-      port: 6667
-      targetPort: 6667
+      port: 80
+      targetPort: 80
   selector:
-    app: ngircd
+    app: rss-bridge
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ngircd-ingress
-  annotations:
-    kubernetes.io/ingress.class: traefik
+  name: rss-bridge-ingress
 spec:
   tls:
     - secretName: "le-cert"
     - hosts:
-        - ngircd.sethpyle.com
+        - rssbridge.sethpyle.com
   rules:
-    - host: ngircd.sethpyle.com
+    - host: rssbridge.sethpyle.com
       http:
         paths:
           - pathType: ImplementationSpecific
             backend:
               service:
-                name: ngircd
+                name: rss-bridge
                 port:
-                  number: 6667
+                  number: 80

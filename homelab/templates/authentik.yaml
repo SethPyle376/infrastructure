@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentik-server
+  labels:
+    app: authentik-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentik-server
+  template:
+    metadata:
+      labels:
+        app: authentik-server
+    spec:
+      containers:
+        - name: authentik-server
+          image: {{ .Values.images.authentik.image}}:{{ .Values.images.authentik.tag }}
+          args: ["server"]
+          env:
+            - name: "AUTHENTIK_REDIS__HOST"
+              value: "redis"
+            - name: "AUTHENTIK_POSTGRESQL__HOST"
+              value: "postgres"
+            - name: "AUTHENTIK_POSTGRESQL__USER"
+              value: {{ .Values.postgres.user }}
+            - name: "AUTHENTIK_POSTGRESQL__PASSWORD"
+              value: {{ .Values.postgres.pass }}
+            - name: "AUTHENTIK_POSTGRESQL__NAME"
+              value: "authentik"
+            - name: "AUTHENTIK_SECRET_KEY"
+              value: {{ .Values.authentik.secretKey }}
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "2Gi"
+              cpu: "2"
+          imagePullPolicy: {{ .Values.images.authentik.imagePullPolicy }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentik-worker
+  labels:
+    app: authentik-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentik-worker
+  template:
+    metadata:
+      labels:
+        app: authentik-worker
+    spec:
+      containers:
+        - name: authentik-worker
+          image: {{ .Values.images.authentik.image}}:{{ .Values.images.authentik.tag }}
+          args: ["worker"]
+          env:
+            - name: "AUTHENTIK_REDIS__HOST"
+              value: "redis"
+            - name: "AUTHENTIK_POSTGRESQL__HOST"
+              value: "postgres"
+            - name: "AUTHENTIK_POSTGRESQL__USER"
+              value: {{ .Values.postgres.user }}
+            - name: "AUTHENTIK_POSTGRESQL__PASSWORD"
+              value: {{ .Values.postgres.pass }}
+            - name: "AUTHENTIK_POSTGRESQL__NAME"
+              value: "authentik"
+            - name: "AUTHENTIK_SECRET_KEY"
+              value: {{ .Values.authentik.secretKey }}
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "2Gi"
+              cpu: "2"
+          imagePullPolicy: {{ .Values.images.authentik.imagePullPolicy }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authentik-server
+  labels:
+    app: authentik-server
+spec:
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+  selector:
+    app: authentik-server
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: authentik-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - auth.sethpyle.com
+  rules:
+    - host: auth.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: authentik-server
+                port:
+                  number: 9000
+ 

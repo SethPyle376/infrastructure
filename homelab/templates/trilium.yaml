@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trilium
+  labels:
+    app: trilium
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trilium
+  template:
+    metadata:
+      labels:
+        app: trilium
+    spec:
+      volumes:
+        - name: trilium-data
+          persistentVolumeClaim:
+            claimName: trilium-pvc
+      containers:
+        - name: trilium
+          image: {{ .Values.images.trilium.image }}:{{ .Values.images.trilium.tag }}
+          env:
+            - name: TRILIUM_DATA_DIR
+              value: /home/node/trilium-data
+            - name: TRILIUM_PORT
+              value: '8080'
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          volumeMounts:
+            - name: trilium-data
+              mountPath: /home/node/trilium-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: trilium-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trilium
+  labels:
+    app: trilium
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: trilium
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: trilium-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - notes.sethpyle.com
+  rules:
+    - host: notes.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: trilium
+                port:
+                  number: 8080

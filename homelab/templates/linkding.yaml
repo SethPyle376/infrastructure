@@ -1,40 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shiori
+  name: linkding
   labels:
-    app: shiori
+    app: linkding
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: shiori
+      app: linkding
   template:
     metadata:
       labels:
-        app: shiori
+        app: linkding
     spec:
       volumes:
-        - name: shiori-data
+        - name: linkding-data
           persistentVolumeClaim:
-            claimName: shiori-data-pvc
+            claimName: linkding-data-pvc
       containers:
-        - name: shiori
-          image: {{ .Values.images.shiori.image }}:{{ .Values.images.shiori.tag }}
+        - name: linkding
+          image: {{ .Values.images.linkding.image }}:{{ .Values.images.linkding.tag }}
           ports:
-            - containerPort: 8080
+            - containerPort: 9090
               protocol: TCP
-          env:
-            - name: SHIORI_PG_USER
-              value: shiori
-            - name: SHIORI_PG_PASS
-              value: {{ .Values.postgres.pass }}
-            - name: SHIORI_PG_NAME
-              value: shiori
-            - name: SHIORI_PG_HOST
-              value: postgres
-            - name: SHIORI_PG_PORT
-              value: "5432"
           resources:
             requests:
               memory: "128Mi"
@@ -43,14 +32,14 @@ spec:
               memory: "512Mi"
               cpu: "500m"
           volumeMounts:
-            - name: shiori-data
-              mountPath: /data
-          imagePullPolicy: {{ .Values.images.shiori.imagePullPolicy }}
+            - name: linkding-data
+              mountPath: /etc/linkding/data
+          imagePullPolicy: {{ .Values.images.linkding.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: shiori-data-pvc
+  name: linkding-data-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -62,22 +51,22 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: shiori
+  name: linkding
   labels:
-    app: shiori
+    app: linkding
 spec:
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 9090
+      targetPort: 9090
   selector:
-    app: shiori
+    app: linkding
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: shiori-ingress
+  name: linkding-ingress
 spec:
   tls:
     - secretName: "le-cert"
@@ -90,6 +79,6 @@ spec:
           - pathType: ImplementationSpecific
             backend:
               service:
-                name: shiori
+                name: linkding
                 port:
-                  number: 8080
+                  number: 9090

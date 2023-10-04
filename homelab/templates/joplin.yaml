@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: joplin
+  labels:
+    app: joplin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: joplin
+  template:
+    metadata:
+      labels:
+        app: joplin
+    spec:
+      containers:
+        - name: joplin
+          image: {{ .Values.images.joplin.image }}:{{ .Values.images.joplin.tag }}
+          env:
+            - name: APP_BASE_URL
+              value: 'https://joplin.sethpyle.com'
+            - name: APP_PORT
+              value: '8080'
+            - name: DB_CLIENT
+              value: pg
+            - name: POSTGRES_HOST
+              value: postgres
+            - name: POSTGRES_DATABASE
+              value: joplin
+            - name: POSTGRES_PORT
+              value: '5432'
+            - name: POSTGRES_USER
+              value: joplin
+            - name: POSTGRES_PASSWORD
+              value: joplin
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: joplin
+  labels:
+    app: joplin
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: joplin
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: joplin-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - joplin.sethpyle.com
+  rules:
+    - host: joplin.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: joplin
+                port:
+                  number: 8080

@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog
+  labels:
+    app: blog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blog
+  template:
+    metadata:
+      labels:
+        app: blog
+    spec:
+      imagePullSecrets:
+        - name: dockerconfigjson-github-com
+      containers:
+        - name: blog
+          image: {{ .Values.images.blog.image }}:{{ .Values.images.blog.tag }}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+          imagePullPolicy: {{ .Values.images.blog.imagePullPolicy }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog
+  labels:
+    app: blog
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: blog
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: blog-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - blog.sethpyle.com
+  rules:
+    - host: blog.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: blog
+                port:
+                  number: 80

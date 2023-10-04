@@ -13,7 +13,7 @@ metadata:
 rules:
   - apiGroups: ["apps", "extensions"]
     resources: ["deployments"]
-    resourceNames: ["teddit"]
+    resourceNames: ["teddit", "youtube"]
     verbs: ["get", "patch", "list", "watch"]
 ---
 # bind the role to the service account
@@ -34,11 +34,11 @@ subjects:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: deployment-restart
+  name: deployment-restart-teddit
   namespace: homelab 
 spec:
   concurrencyPolicy: Forbid
-  schedule: '0 * * * *'
+  schedule: '* 0 * * *'
   jobTemplate:
     spec:
       backoffLimit: 2
@@ -55,3 +55,28 @@ spec:
                 - 'rollout'
                 - 'restart'
                 - 'deployment/teddit'
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: deployment-restart-invidious
+  namespace: homelab 
+spec:
+  concurrencyPolicy: Forbid
+  schedule: '* */3 * * *'
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          serviceAccountName: deployment-restart
+          restartPolicy: Never
+          containers:
+            - name: kubectl
+              image: rancher/kubectl:v1.23.7 
+              command:
+                - 'kubectl'
+                - 'rollout'
+                - 'restart'
+                - 'deployment/youtube'

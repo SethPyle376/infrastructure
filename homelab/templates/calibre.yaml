@@ -23,7 +23,7 @@ spec:
             claimName: calibre-config-pvc
       containers:
         - name: calibre
-          image: {{ .Values.images.calibre.image }}:{{ .Values.images.calibre.tag }}
+          image: "{{ .Values.images.calibre.image }}:{{ .Values.images.calibre.tag }}"
           ports:
             - containerPort: 8083
               protocol: TCP

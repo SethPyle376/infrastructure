@@ -20,7 +20,7 @@ spec:
             secretName: invidious-config
       containers:
         - name: youtube
-          image: {{ .Values.images.youtube.image }}:{{ .Values.images.youtube.tag }}
+          image: "{{ .Values.images.youtube.image }}:{{ .Values.images.youtube.tag }}"
           ports:
             - containerPort: {{ .Values.youtube.port }}
               protocol: TCP

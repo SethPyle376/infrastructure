@@ -1,45 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: linkding
+  name: radicale
   labels:
-    app: linkding
+    app: radicale
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: linkding
+      app: radicale
   template:
     metadata:
       labels:
-        app: linkding
+        app: radicale
     spec:
       volumes:
-        - name: linkding-data
+        - name: radicale-data
           persistentVolumeClaim:
-            claimName: linkding-data-pvc
+            claimName: radicale-pvc
       containers:
-        - name: linkding
-          image: "{{ .Values.images.linkding.image }}:{{ .Values.images.linkding.tag }}"
+        - name: radicale
+          image: "{{ .Values.images.radicale.image }}:{{ .Values.images.radicale.tag }}"
           ports:
-            - containerPort: 9090
+            - containerPort: {{ .Values.radicale.port }}
               protocol: TCP
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "100m"
+              memory: "256Mi"
+              cpu: "500m"
             limits:
               memory: "512Mi"
-              cpu: "500m"
+              cpu: "1"
           volumeMounts:
-            - name: linkding-data
-              mountPath: /etc/linkding/data
-          imagePullPolicy: {{ .Values.images.linkding.imagePullPolicy }}
+            - name: radicale-data
+              mountPath: /data
+          imagePullPolicy: {{ .Values.images.radicale.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: linkding-data-pvc
+  name: radicale-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -51,34 +51,34 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: linkding
+  name: radicale
   labels:
-    app: linkding
+    app: radicale
 spec:
   ports:
     - protocol: TCP
-      port: 9090
-      targetPort: 9090
+      port: {{ .Values.radicale.port }}
+      targetPort: {{ .Values.radicale.port }}
   selector:
-    app: linkding
+    app: radicale
   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: linkding-ingress
+  name: radicale-ingress
 spec:
   tls:
     - secretName: "le-cert"
     - hosts:
-        - bookmarks.sethpyle.com
+        - calendar.sethpyle.com
   rules:
-    - host: bookmarks.sethpyle.com
+    - host: calendar.sethpyle.com
       http:
         paths:
           - pathType: ImplementationSpecific
             backend:
               service:
-                name: linkding
+                name: radicale
                 port:
-                  number: 9090
+                  number: {{ .Values.radicale.port }}

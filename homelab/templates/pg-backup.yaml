@@ -16,7 +16,7 @@ spec:
                 claimName: pg-backup-pvc
           containers:
             - name: pg-backup
-              image: {{ .Values.images.pgBackup.image }}:{{ .Values.images.pgBackup.tag }}
+              image: "{{ .Values.images.pgBackup.image }}:{{ .Values.images.pgBackup.tag }}"
               env:
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
@@ -39,11 +39,11 @@ spec:
                 - name: PG_PORT
                   value: "{{ .Values.postgres.port }}"
                 - name: DISCORD_WEBHOOK
-                  value: {{ .Values.pgBackup.discordWebhook }}
+                  value: "https://push.sethpyle.com/postgres_backup"
               command:
                 - /bin/sh
                 - -c
-                - cd /home/root; ls; bash do-backup.sh
+                - cd /home/root; ls; /bin/sh do-backup.sh
               imagePullPolicy: {{ .Values.images.pgBackup.imagePullPolicy }}
               resources:
                 requests:

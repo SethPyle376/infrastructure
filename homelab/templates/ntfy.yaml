@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ntfy
+  labels:
+    app: ntfy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ntfy
+  template:
+    metadata:
+      labels:
+        app: ntfy
+    spec:
+      volumes:
+        - name: ntfy-settings
+          configMap:
+            name: ntfy-settings-configmap
+      containers:
+        - name: ntfy
+          image: "{{ .Values.images.ntfy.image }}:{{ .Values.images.ntfy.tag }}"
+          args: ["serve"]
+          ports:
+            - containerPort: {{ .Values.ntfy.port }}
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+          volumeMounts:
+            - name: ntfy-settings
+              mountPath: /etc/ntfy/server.yml
+              subPath: server.yml
+          imagePullPolicy: {{ .Values.images.ntfy.imagePullPolicy }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ntfy-settings-configmap
+data:
+  server.yml: |-
+{{ .Files.Get "config_files/ntfy-settings.yml" | indent 4}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ntfy-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ntfy
+  labels:
+    app: ntfy
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.ntfy.port }}
+      targetPort: {{ .Values.ntfy.port }}
+  selector:
+    app: ntfy
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ntfy-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - push.sethpyle.com
+  rules:
+    - host: push.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ntfy
+                port:
+                  number: {{ .Values.ntfy.port }}

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: authentik-server
-          image: {{ .Values.images.authentik.image}}:{{ .Values.images.authentik.tag }}
+          image: "{{ .Values.images.authentik.image}}:{{ .Values.images.authentik.tag }}"
           args: ["server"]
           env:
             - name: "AUTHENTIK_REDIS__HOST"
@@ -31,6 +31,8 @@ spec:
               value: "authentik"
             - name: "AUTHENTIK_SECRET_KEY"
               value: {{ .Values.authentik.secretKey }}
+            - name: "AUTHENTIK_DEFAULT_USER_CHANGE_USERNAME"
+              value: "true"
           ports:
             - containerPort: 9000
               protocol: TCP

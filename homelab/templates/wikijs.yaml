@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: wikijs
-          image: {{ .Values.images.wikijs.image }}:{{ .Values.images.wikijs.tag }}
+          image: "{{ .Values.images.wikijs.image }}:{{ .Values.images.wikijs.tag }}"
           env:
             - name: DB_TYPE
               value: postgres

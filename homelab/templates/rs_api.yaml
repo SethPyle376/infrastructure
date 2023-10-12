@@ -18,7 +18,7 @@ spec:
         - name: dockerconfigjson-github-com
       containers:
         - name: rs-api
-          image: {{ .Values.images.rsApi.image }}:{{ .Values.images.rsApi.tag }}
+          image: "{{ .Values.images.rsApi.image }}:{{ .Values.images.rsApi.tag }}"
           env:
             - name: DB_URI
               value: "postgresql://rs_api:rs_api@postgres"

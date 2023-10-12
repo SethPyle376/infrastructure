@@ -20,7 +20,7 @@ spec:
             claimName: ngircd-config-pvc
       containers:
         - name: ngircd
-          image: {{ .Values.images.ngircd.image }}:{{ .Values.images.ngircd.tag }}
+          image: "{{ .Values.images.ngircd.image }}:{{ .Values.images.ngircd.tag }}"
           ports:
             - containerPort: 6667
               protocol: TCP

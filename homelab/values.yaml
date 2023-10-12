@@ -23,11 +23,11 @@ images:
     imagePullPolicy: IfNotPresent
   pgBackup:
     image: sethpyle/pg-backup
-    tag: 1.1.0
+    tag: 2.1.0
     imagePullPolicy: Always
   calibre:
     image: linuxserver/calibre-web
-    tag: 0.6.17
+    tag: 0.6.20
     imagePullPolicy: IfNotPresent
   airsonic:
     image: linuxserver/airsonic-advanced
@@ -150,8 +150,8 @@ images:
     tag: 2022.12.1
     imagePullPolicy: IfNotPresent
   changedetection:
-    image: linuxserver/changedetection.io
-    tag: 0.40.3
+    image: dgtlmoon/changedetection.io
+    tag: 0.45.3
     imagePullPolicy: IfNotPresent
   rssBridge:
     image: rssbridge/rss-bridge
@@ -159,7 +159,7 @@ images:
     imagePullPolicy: IfNotPresent
   trilium:
     image: zadam/trilium
-    tag: 0.59-latest
+    tag: 0.60.4
     imagePullPolicy: IfNotPresent
   joplin:
     image: florider89/joplin-server
@@ -184,6 +184,22 @@ images:
   authentik:
     image: ghcr.io/goauthentik/server
     tag: 2023.8.3
+    imagePullPolicy: IfNotPresent
+  radicale:
+    image: tomsquest/docker-radicale
+    tag: 3.1.8.3
+    imagePullPolicy: IfNotPresent
+  homepage:
+    image: ghcr.io/benphelps/homepage
+    tag: v0.7.0
+    imagePullPolicy: IfNotPresent
+  ntfy:
+    image: binwiederhier/ntfy
+    tag: v2.7.0
+    imagePullPolicy: IfNotPresent
+  nocodb:
+    image: nocodb/nocodb
+    tag: 0.202.4
     imagePullPolicy: IfNotPresent
 
 postgres:
@@ -264,3 +280,9 @@ cloudflaredLemmy:
 
 authentik:
   secretKey:
+
+radicale:
+  port: 5232
+
+ntfy:
+  port: 80

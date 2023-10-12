@@ -20,7 +20,7 @@ spec:
             claimName: gitea-pvc
       containers:
         - name: gitea
-          image: {{ .Values.images.gitea.image }}:{{ .Values.images.gitea.tag }}
+          image: "{{ .Values.images.gitea.image }}:{{ .Values.images.gitea.tag }}"
           ports:
             - containerPort: 3000
               protocol: TCP

@@ -20,7 +20,7 @@ spec:
             claimName: homeassistant-config-pvc
       containers:
         - name: homeassistant
-          image: {{ .Values.images.homeassistant.image }}:{{ .Values.images.homeassistant.tag }}
+          image: "{{ .Values.images.homeassistant.image }}:{{ .Values.images.homeassistant.tag }}"
           ports:
             - containerPort: 8123
               protocol: TCP

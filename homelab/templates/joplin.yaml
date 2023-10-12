@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: joplin
-          image: {{ .Values.images.joplin.image }}:{{ .Values.images.joplin.tag }}
+          image: "{{ .Values.images.joplin.image }}:{{ .Values.images.joplin.tag }}"
           env:
             - name: APP_BASE_URL
               value: 'https://joplin.sethpyle.com'

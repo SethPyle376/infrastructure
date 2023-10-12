@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cloudflared
-          image: {{ .Values.images.cloudflared.image }}:{{ .Values.images.cloudflared.tag }}
+          image: "{{ .Values.images.cloudflared.image }}:{{ .Values.images.cloudflared.tag }}"
           args: ["tunnel", "run", "--token", {{ .Values.cloudflared.token }}]
           resources:
             requests:

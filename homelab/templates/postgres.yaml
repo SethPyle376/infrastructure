@@ -28,7 +28,7 @@ spec:
                     operator: DoesNotExist
       containers:
         - name: postgres
-          image: {{ .Values.images.postgres.image}}:{{ .Values.images.postgres.tag }}
+          image: "{{ .Values.images.postgres.image}}:{{ .Values.images.postgres.tag }}"
           ports:
             - containerPort: {{ .Values.postgres.port }}
               protocol: TCP

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: vikunja-frontend
-          image: {{ .Values.images.vikunjaFrontend.image }}:{{ .Values.images.vikunjaFrontend.tag }}
+          image: "{{ .Values.images.vikunjaFrontend.image }}:{{ .Values.images.vikunjaFrontend.tag }}"
           ports:
             - containerPort: 80
               protocol: TCP

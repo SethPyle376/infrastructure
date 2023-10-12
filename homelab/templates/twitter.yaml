@@ -5,7 +5,7 @@ metadata:
   labels:
     app: nitter
 spec:
-  replicas: 2
+  replicas: 0
   selector:
     matchLabels:
       app: nitter
@@ -20,7 +20,7 @@ spec:
             name: nitter-configmap
       containers:
         - name: nitter
-          image: {{ .Values.images.nitter.image }}:{{ .Values.images.nitter.tag }}
+          image: "{{ .Values.images.nitter.image }}:{{ .Values.images.nitter.tag }}"
           resources:
             requests:
               memory: "50Mi"

@@ -20,7 +20,7 @@ spec:
             secretName: irc-discord-bridge-config
       containers:
         - name: discord-irc
-          image: {{ .Values.images.discordIrc.image }}:{{ .Values.images.discordIrc.tag }}
+          image: "{{ .Values.images.discordIrc.image }}:{{ .Values.images.discordIrc.tag }}"
           resources:
             requests:
               memory: "64Mi"

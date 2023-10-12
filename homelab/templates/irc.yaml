@@ -20,7 +20,7 @@ spec:
             claimName: irc-pvc
       containers:
         - name: irc
-          image: {{ .Values.images.irc.image }}:{{ .Values.images.irc.tag }}
+          image: "{{ .Values.images.irc.image }}:{{ .Values.images.irc.tag }}"
           ports:
             - containerPort: {{ .Values.irc.port }}
               protocol: TCP

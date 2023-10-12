@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: teddit
-          image: {{ .Values.images.teddit.image }}:{{ .Values.images.teddit.tag }}
+          image: "{{ .Values.images.teddit.image }}:{{ .Values.images.teddit.tag }}"
           ports:
             - containerPort: {{ .Values.teddit.port }}
               protocol: TCP

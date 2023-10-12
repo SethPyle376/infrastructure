@@ -23,7 +23,7 @@ spec:
             claimName: grafana-config-pvc
       containers:
         - name: grafana
-          image: {{ .Values.images.grafana.image }}:{{ .Values.images.grafana.tag }}
+          image: "{{ .Values.images.grafana.image }}:{{ .Values.images.grafana.tag }}"
           env:
             - name: "GF_SERVER_ROOT_URL"
               value: "https://grafana.sethpyle.com"

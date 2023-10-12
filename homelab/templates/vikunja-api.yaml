@@ -23,7 +23,7 @@ spec:
             secretName: vikunja-config
       containers:
         - name: vikunja-api
-          image: {{ .Values.images.vikunjaApi.image }}:{{ .Values.images.vikunjaApi.tag }}
+          image: "{{ .Values.images.vikunjaApi.image }}:{{ .Values.images.vikunjaApi.tag }}"
           env:
             - name: VIKUNJA_DATABASE_TYPE
               value: postgres

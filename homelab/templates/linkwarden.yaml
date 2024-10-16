@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkwarden
+  labels:
+    app: linkwarden
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: linkwarden
+  template:
+    metadata:
+      labels:
+        app: linkwarden
+    spec:
+      volumes:
+        - name: linkwarden-data
+          persistentVolumeClaim:
+            claimName: linkwarden-pvc
+      containers:
+        - name: postgres
+          image: "{{ .Values.images.linkwarden.image}}:{{ .Values.images.linkwarden.tag }}"
+          env:
+            - name: DATABASE_URL
+              value: "{{ .Values.linkwarden.db }}"
+            - name: NEXTAUTH_URL
+              value: http://localhost:3000
+            - name: NEXTAUTH_SECRET
+              value: someSecret
+          ports:
+            - containerPort: {{ .Values.linkwarden.port }}
+              protocol: TCP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+          volumeMounts:
+            - name: linkwarden-data
+              mountPath: /data/data
+          imagePullPolicy: {{ .Values.images.linkwarden.imagePullPolicy }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: linkwarden-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: linkwarden
+  labels:
+    app: linkwarden
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.linkwarden.port }}
+      targetPort: {{ .Values.linkwarden.port }}
+  selector:
+    app: linkwarden
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: linkwarden-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - links.sethpyle.com
+  rules:
+    - host: links.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: linkwarden
+                port:
+                  number: {{ .Values.linkwarden.port }}

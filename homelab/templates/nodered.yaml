@@ -77,6 +77,21 @@ spec:
     app: nodered
   type: ClusterIP
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodered-smtp
+  labels:
+    app: nodered
+spec:
+  ports:
+    - protocol: TCP
+      port: 1025
+      targetPort: 1025
+  selector:
+    app: nodered
+  type: ClusterIP
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

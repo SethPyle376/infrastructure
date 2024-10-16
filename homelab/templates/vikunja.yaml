@@ -23,7 +23,7 @@ spec:
             secretName: vikunja-config
       containers:
         - name: vikunja-api
-          image: "{{ .Values.images.vikunjaApi.image }}:{{ .Values.images.vikunjaApi.tag }}"
+          image: "{{ .Values.images.vikunja.image }}:{{ .Values.images.vikunja.tag }}"
           env:
             - name: VIKUNJA_DATABASE_TYPE
               value: postgres
@@ -44,15 +44,15 @@ spec:
             - name: VIKUNJA_MAILER_ENABLED
               value: "1"
             - name: VIKUNJA_MAILER_FORCESSL
-              value: "1"
+              value: "0"
             - name: VIKUNJA_MAILER_HOST
-              value: "email-smtp.us-east-1.amazonaws.com"
+              value: "nodered-smtp"
             - name: VIKUNJA_MAILER_PORT
-              value: "465"
+              value: "1025"
             - name: VIKUNJA_MAILER_USERNAME
-              value: {{ .Values.vikunja.mailerUsername }}
+              value: "username"
             - name: VIKUNJA_MAILER_PASSWORD
-              value: {{ .Values.vikunja.mailerPassword }}
+              value: "password"
             - name: VIKUNJA_MAILER_FROMEMAIL
               value: "homelab@sethpyle.com"
             - name: VIKUNJA_SERVICE_ENABLEREGISTRATION
@@ -73,7 +73,7 @@ spec:
             - name: vikunja-config
               mountPath: /app/vikunja/config.yml
               subPath: config.yml
-          imagePullPolicy: {{ .Values.images.vikunjaApi.imagePullPolicy }}
+          imagePullPolicy: {{ .Values.images.vikunja.imagePullPolicy }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -101,3 +101,23 @@ spec:
   selector:
     app: vikunja-api
   type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vikunja-ingress
+spec:
+  tls:
+    - secretName: "le-cert"
+    - hosts:
+        - tasks.sethpyle.com
+  rules:
+    - host: tasks.sethpyle.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: vikunja-api
+                port:
+                  number: 3456

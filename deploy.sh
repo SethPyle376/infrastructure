@@ -25,4 +25,5 @@ helm upgrade --install homelab homelab/ \
 --set githubRunner.accessToken=$GITHUB_RUNNER_ACCESS_TOKEN \
 --set cloudflared.token=$CLOUDFLARED_TOKEN \
 --set cloudflaredLemmy.token=$CLOUDFLARED_LEMMY_TOKEN \
---set authentik.secretKey=$AUTHENTIK_SECRET_KEY
+--set authentik.secretKey=$AUTHENTIK_SECRET_KEY \
+--set linkwarden.db=$LINKWARDEN_DB

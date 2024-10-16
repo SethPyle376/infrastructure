@@ -347,7 +347,7 @@ upstream-base-url: "https://ntfy.sh"
 #   ntfy user and group by running: chown ntfy.ntfy <filename>.
 #
 # Example (good for production):
-#   log-level: info
+log-level: debug
 #   log-format: json
 #   log-file: /var/log/ntfy.log
 #

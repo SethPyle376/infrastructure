@@ -30,7 +30,7 @@ spec:
               cpu: "10m"
             limits:
               memory: "512Mi"
-              cpu: "500m"
+              cpu: "1"
           volumeMounts:
             - name: invidious-config
               mountPath: /invidious/config/config.yml

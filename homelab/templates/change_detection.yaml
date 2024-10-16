@@ -49,6 +49,7 @@ spec:
           imagePullPolicy: {{ .Values.images.changedetection.imagePullPolicy }}
         - name: browserless
           image: browserless/chrome:latest
+          imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /dev/shm
               name: dshm

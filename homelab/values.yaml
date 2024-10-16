@@ -39,7 +39,7 @@ images:
     imagePullPolicy: IfNotPresent
   nodered:
     image: nodered/node-red
-    tag: 3.0.0
+    tag: 4.0.1
     imagePullPolicy: IfNotPresent
   matrix:
     image: matrixdotorg/synapse
@@ -83,7 +83,7 @@ images:
     imagePullPolicy: IfNotPresent
   youtube:
     image: quay.io/invidious/invidious
-    tag: 34508966027fce3f460d9670eeecef67b92565a0-arm64
+    tag: 2024.09.20-a021b93-arm64
     imagePullPolicy: IfNotPresent
   nocodb:
     image: nocodb/nocodb
@@ -133,17 +133,14 @@ images:
     image: sissbruecker/linkding
     tag: 1.17.2
     imagePullPolicy: IfNotPresent
-  vikunjaApi:
-    image: vikunja/api
-    tag: 0.21.0
+  vikunja:
+    image: vikunja/vikunja
+    tag: 0.23.0
     imagePullPolicy: IfNotPresent
-  vikunjaFrontend:
-    image: vikunja/frontend
-    tag: 0.21.0
     imagePullPolicy: IfNotPresent
   rsApi:
     image: ghcr.io/sethpyle376/rs_api_server
-    tag: v0.6.0
+    tag: v0.8.0
     imagePullPolicy: IfNotPresent
   cloudflared:
     image: cloudflare/cloudflared
@@ -155,7 +152,7 @@ images:
     imagePullPolicy: IfNotPresent
   rssBridge:
     image: rssbridge/rss-bridge
-    tag: sha-8486c0f
+    tag: sha-154b8b9
     imagePullPolicy: IfNotPresent
   trilium:
     image: zadam/trilium
@@ -179,7 +176,7 @@ images:
     imagePullPolicy: IfNotPresent
   blog:
     image: ghcr.io/sethpyle376/blog
-    tag: v1.1.0
+    tag: v2.0.4
     imagePullPolicy: IfNotPresent
   authentik:
     image: ghcr.io/goauthentik/server
@@ -190,16 +187,24 @@ images:
     tag: 3.1.8.3
     imagePullPolicy: IfNotPresent
   homepage:
-    image: ghcr.io/benphelps/homepage
-    tag: v0.7.0
+    image: ghcr.io/gethomepage/homepage
+    tag: v0.8.9
     imagePullPolicy: IfNotPresent
   ntfy:
     image: binwiederhier/ntfy
-    tag: v2.7.0
+    tag: v2.11.0
     imagePullPolicy: IfNotPresent
   nocodb:
     image: nocodb/nocodb
-    tag: 0.202.4
+    tag: 0.207.3
+    imagePullPolicy: IfNotPresent
+  giteaRunner:
+    image: gitea/act_runner
+    tag: 0.2.6
+    imagePullPolicy: IfNotPresent
+  linkwarden:
+    image: ghcr.io/linkwarden/linkwarden
+    tag: v2.3.0
     imagePullPolicy: IfNotPresent
 
 postgres:
@@ -286,3 +291,7 @@ radicale:
 
 ntfy:
   port: 80
+
+linkwarden:
+  port: 3000
+  db:
